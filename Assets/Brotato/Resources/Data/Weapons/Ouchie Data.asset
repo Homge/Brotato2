@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e0a2a4d1da6b4f147bc193fcfa17dcac, type: 3}
+  m_Name: Ouchie Data
+  m_EditorClassIdentifier: 
+  <Name>k__BackingField: Ouchie
+  <Sprite>k__BackingField: {fileID: 6766118796701390678, guid: 05c36890be088704da339d14a151f6b2, type: 3}
+  <PurchasePrice>k__BackingField: 90
+  <RecyclePrice>k__BackingField: 70
+  <AttackSound>k__BackingField: {fileID: 8300000, guid: c673fb9cf3e24d443b75f2de39c6fb01, type: 3}
+  <Prefab>k__BackingField: {fileID: 7576686611247285231, guid: 8f634aab0ff8383469dbe06d45d478c6, type: 3}
+  attack: 15
+  attackSpeed: 1
+  criticalChance: 7
+  criticalPercent: 2
+  range: 3

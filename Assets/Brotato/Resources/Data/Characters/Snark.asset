@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dcdf024a62014a346b76967f8181fc81, type: 3}
+  m_Name: Snark
+  m_EditorClassIdentifier: 
+  <Name>k__BackingField: Snark
+  <Sprite>k__BackingField: {fileID: 21300000, guid: 78d5bcd8cfde50148a6621800249b2f0, type: 3}
+  <PurchasePrice>k__BackingField: 600
+  attack: 5
+  attackSpeed: -2
+  criticalChance: 0
+  criticalPercent: 0
+  moveSpeed: 0
+  maxHealth: 0
+  range: 0
+  healthRecoverySpeed: -1
+  armor: 0
+  luck: 0
+  dodge: 0
+  lifeSteal: 3

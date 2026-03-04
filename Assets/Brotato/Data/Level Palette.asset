@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 60e9d5b314ea3c0499cd29b842da288a, type: 3}
+  m_Name: Level Palette
+  m_EditorClassIdentifier: 
+  <LevelColors>k__BackingField:
+  - {r: 0.67058825, g: 0.7921569, b: 1, a: 1}
+  - {r: 0.6509804, g: 0.24705882, b: 1, a: 1}
+  - {r: 1, g: 0.5137255, b: 0.1882353, a: 1}
+  - {r: 1, g: 0.2509804, b: 0.2509804, a: 1}
+  <LevelOutlineColors>k__BackingField:
+  - {r: 0.47031248, g: 0.5523437, b: 0.7, a: 1}
+  - {r: 0.45390612, g: 0.16953124, b: 0.7, a: 1}
+  - {r: 0.7, g: 0.35960785, b: 0.1317647, a: 1}
+  - {r: 0.7, g: 0.17568626, b: 0.17568626, a: 1}

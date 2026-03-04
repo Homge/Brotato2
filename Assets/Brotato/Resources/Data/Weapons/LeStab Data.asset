@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e0a2a4d1da6b4f147bc193fcfa17dcac, type: 3}
+  m_Name: LeStab Data
+  m_EditorClassIdentifier: 
+  <Name>k__BackingField: LeStab
+  <Sprite>k__BackingField: {fileID: 21300000, guid: e260fcef0dd7ae847bb70df83762c267, type: 3}
+  <PurchasePrice>k__BackingField: 90
+  <RecyclePrice>k__BackingField: 70
+  <AttackSound>k__BackingField: {fileID: 8300000, guid: c673fb9cf3e24d443b75f2de39c6fb01, type: 3}
+  <AnimatorOverride>k__BackingField: {fileID: 22100000, guid: 05e8fe9daf5a8d4458f1389fc565dc19, type: 2}
+  <Prefab>k__BackingField: {fileID: 7576686611247285231, guid: 6421d1d99b05ed0489934d27331acd29, type: 3}
+  attack: 15
+  attackSpeed: 1
+  criticalChance: 7
+  criticalPercent: 2
+  range: 3
