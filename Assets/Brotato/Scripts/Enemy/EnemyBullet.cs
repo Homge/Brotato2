@@ -56,5 +56,8 @@ public class EnemyBullet : MonoBehaviour
         rig.linearVelocity = Vector2.zero;
         rig.angularVelocity = 0;
         collider.enabled = true;
+
+        LeanTween.cancel(gameObject);
+        LeanTween.delayedCall(gameObject, 5, () => rangeEnemyAttack.ReleaseBullet(this));
     }
 }

@@ -957,7 +957,7 @@ MonoBehaviour:
   healthBar: {fileID: 8317560890128707402}
   healthText: {fileID: 2745999000639214723}
   animator: {fileID: 936254090157666384}
-  maxIdleDuration: 1
+  maxIdleDuration: 0
   moveSpeed: 10
 --- !u!58 &5917311224323821174
 CircleCollider2D:

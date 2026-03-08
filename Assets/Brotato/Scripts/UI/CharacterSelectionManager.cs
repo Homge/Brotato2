@@ -35,6 +35,8 @@ public class CharacterSelectionManager : MonoBehaviour, IWantToBeSaved
     // Start is called before the first frame update
     void Start()
     {
+        Load();
+
         characterInfo.Button.onClick.RemoveAllListeners();
         characterInfo.Button.onClick.AddListener(PurchaseSelectedCharacter);
 
