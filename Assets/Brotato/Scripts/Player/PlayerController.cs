@@ -20,12 +20,14 @@ public class PlayerController : MonoBehaviour, IPlayerStatsDependency
     {
         rig = GetComponent<Rigidbody2D>();
         moveSpeed = baseMoveSpeed;
-    }
+    }   
 
     private void FixedUpdate()
     {
-        rig.linearVelocity = InputManager.instance.GetMoveVector() * moveSpeed * Time.fixedDeltaTime;
+        Vector2 move = InputManager.instance.GetMoveVector();
+        rig.linearVelocity = move * moveSpeed;
     }
+
     public void UpdateStats(PlayerStatsManager playerStatsManager)
     {
         float moveSpeedPercent = playerStatsManager.GetStatValue(Stat.MoveSpeed) / 100;
