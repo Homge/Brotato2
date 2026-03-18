@@ -25,6 +25,12 @@ public enum Stat
     Dodge,
     LifeSteal
 }
+public enum WeaponTag
+{
+    Blade,
+    Blunt,
+    Firearm
+}
 
 public static class Enums
 {

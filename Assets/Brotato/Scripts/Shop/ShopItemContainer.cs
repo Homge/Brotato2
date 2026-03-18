@@ -40,16 +40,25 @@ public class ShopItemContainer : MonoBehaviour
         CurrencyManager.onUpdated += CurrencyUpdatedCallback;
     }
 
-    private void CurrencyUpdatedCallback()
+   private void CurrencyUpdatedCallback()
     {
-        int itemPrice;
+        // 1. Chốt chặn an toàn: Nếu ô vật phẩm này chưa được nạp dữ liệu gì cả thì dừng lại
+        if (WeaponData == null && ObjectData == null)
+            return;
 
+        int itemPrice;
+        
+        // 2. Tính toán giá dựa trên loại vật phẩm đang chứa
         if (WeaponData != null)
             itemPrice = WeaponStatsCalculator.GetPurchasePrice(WeaponData, weaponLevel);
         else
             itemPrice = ObjectData.Price;
 
-        purchaseButton.interactable = CurrencyManager.instance.HasEnoughCurrency(itemPrice);
+        // 3. Chốt chặn an toàn 2: Đảm bảo nút bấm và CurrencyManager đã tồn tại
+        if (purchaseButton != null && CurrencyManager.instance != null)
+        {
+            purchaseButton.interactable = CurrencyManager.instance.HasEnoughCurrency(itemPrice);
+        }
     }
 
     private void OnDestroy()

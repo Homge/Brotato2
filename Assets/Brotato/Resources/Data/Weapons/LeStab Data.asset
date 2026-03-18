@@ -24,3 +24,4 @@ MonoBehaviour:
   criticalChance: 7
   criticalPercent: 2
   range: 3
+  tags: 00000000

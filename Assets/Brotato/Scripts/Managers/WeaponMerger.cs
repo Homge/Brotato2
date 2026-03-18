@@ -67,6 +67,7 @@ public class WeaponMerger : MonoBehaviour
         {
             Debug.LogError("Something went wrong here...");
             return;
+            
         }
 
         DestroyImmediate(weaponsToMerge[1].gameObject);
@@ -77,5 +78,6 @@ public class WeaponMerger : MonoBehaviour
         weaponsToMerge.Clear();
 
         onMerge?.Invoke(weapon);
+        playerWeapons.EvaluateSynergies();
     }
 }

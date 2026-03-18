@@ -35,8 +35,6 @@ public class CharacterSelectionManager : MonoBehaviour, IWantToBeSaved
     // Start is called before the first frame update
     void Start()
     {
-        Load();
-
         characterInfo.Button.onClick.RemoveAllListeners();
         characterInfo.Button.onClick.AddListener(PurchaseSelectedCharacter);
 
@@ -44,8 +42,14 @@ public class CharacterSelectionManager : MonoBehaviour, IWantToBeSaved
     }
 
 
-    private void Initialize()
+   private void Initialize()
     {
+        // Dọn dẹp UI cũ
+        foreach (Transform child in characterButtonsParent)
+        {
+            Destroy(child.gameObject);
+        }
+
         for (int i = 0; i < characterDatas.Length; i++)
             CreateCharacterButton(i);        
     }
@@ -106,6 +110,9 @@ public class CharacterSelectionManager : MonoBehaviour, IWantToBeSaved
     {
         characterDatas = ResourcesManager.Characters;
 
+        // Xóa bộ đệm trạng thái cũ
+        unlockedStates.Clear();
+        
         for (int i = 0; i < characterDatas.Length; i++)
             unlockedStates.Add(i == 0);
 
@@ -116,10 +123,7 @@ public class CharacterSelectionManager : MonoBehaviour, IWantToBeSaved
             lastSelectedCharacterIndex = (int)lastSelectedCharacterObject;
 
         Initialize();
-
-        //CharacterSelectedCallback(lastSelectedCharacterIndex);
     }
-
     public void Save()
     {
         Sijil.Save(this, unlockedStatesKey, unlockedStates);

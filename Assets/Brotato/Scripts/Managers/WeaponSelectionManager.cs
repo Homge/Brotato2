@@ -22,7 +22,8 @@ public class WeaponSelectionManager : MonoBehaviour, IGameStateListener
         switch(gameState)
         {
             case GameState.GAME:
-
+                if (isInWeaponSelection)
+                {
                 if (selectedWeapon == null)
                 {
                     // Stay in weapon selection screen
@@ -34,7 +35,7 @@ public class WeaponSelectionManager : MonoBehaviour, IGameStateListener
                 playerWeapons.TryAddWeapon(selectedWeapon, initialWeaponLevel);
                 selectedWeapon = null;
                 initialWeaponLevel = 0;
-
+                }
                 break;
 
             case GameState.WEAPONSELECTION:

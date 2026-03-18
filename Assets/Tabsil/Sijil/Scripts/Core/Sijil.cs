@@ -1,146 +1,146 @@
-using System.Collections;
-using System.Collections.Generic;
-using System.IO;
-using UnityEngine;
-using System.Linq;
-using Leguar.TotalJSON;
-using System;
-using System.Reflection;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.IO;
+    using UnityEngine;
+    using System.Linq;
+    using Leguar.TotalJSON;
+    using System;
+    using System.Reflection;
 
 
-namespace Tabsil.Sijil
-{
-    public class Sijil : MonoBehaviour
+    namespace Tabsil.Sijil
     {
-        public static Sijil instance;
-
-        private string dataPath;
-
-        public static GameData GameData { get; private set; }
-
-        private void Awake()
+        public class Sijil : MonoBehaviour
         {
-            if (instance == null)
-                instance = this;
-            else
-                Destroy(gameObject);
+            public static Sijil instance;
 
-#if UNITY_EDITOR
-            dataPath = Application.dataPath + "/GameData.txt";
-#else
-        dataPath = Application.persistentDataPath + "/GameData.txt";
-#endif
+            private string dataPath;
 
-            DontDestroyOnLoad(this);
-            Load();
-        }
+            public static GameData GameData { get; private set; }
 
-        private void Start()
-        {
-        }
-
-        private void LocalSave()
-        {
-            StreamWriter writer = new StreamWriter(dataPath);
-
-            JSON gameDataJSon = JSON.Serialize(GameData);
-            string dataString = gameDataJSon.CreatePrettyString();
-
-            writer.WriteLine(dataString);
-
-            writer.Close();
-        }
-
-        private void Load()
-        {
-            if (!File.Exists(dataPath))
+            private void Awake()
             {
-                GameData = new GameData();
-                LocalSave();
-            }
-            else
-            {
-                StreamReader reader = new StreamReader(dataPath);
-                string dataString = reader.ReadToEnd();
-                reader.Close();
+                if (instance == null)
+                    instance = this;
+                else
+                    Destroy(gameObject);
 
-                JSON gameDataJson = JSON.ParseString(dataString);
-                GameData = gameDataJson.Deserialize<GameData>();
+    #if UNITY_EDITOR
+                dataPath = Application.dataPath + "/GameData.txt";
+    #else
+            dataPath = Application.persistentDataPath + "/GameData.txt";
+    #endif
 
+                DontDestroyOnLoad(this);
+                Load();
             }
 
-            
-            foreach (IWantToBeSaved saveable in FindObjectsByType<MonoBehaviour>(FindObjectsSortMode.None).OfType<IWantToBeSaved>())
-                saveable.Load();
-            
-        }
-
-        private static void Save()
-        {
-            instance.LocalSave();
-        }
-
-        public static void Save(object sender, string key, object data)
-        {
-            string fullKey = GetFullKey(sender, key);
-            string jsonData;
-            Type dataType = data.GetType();
-
-            Type serializableOjectType = typeof(SerializableObject<>).MakeGenericType(dataType);
-            object mySerializableObject = Activator.CreateInstance(serializableOjectType);
-
-            FieldInfo myObjectField = serializableOjectType.GetField("myObject");
-
-            // Set the myList field of the serializableList
-            myObjectField.SetValue(mySerializableObject, data);
-
-            // Finally Serialize it to JSon and save
-            jsonData = JSON.Serialize(mySerializableObject).CreatePrettyString();
-
-            // Before saving, set the dataType to SerializeList<>
-            dataType = serializableOjectType;
-
-            GameData.Add(fullKey, dataType, jsonData);
-            Save();
-        }
-
-        public static bool TryLoad(object sender, string key, out object value)
-        {
-            string fullKey = GetFullKey(sender, key);
-
-            if (GameData.TryGetValue(fullKey, out Type dataType, out string data))
+            private void Start()
             {
-                DeserializeSettings settings = new DeserializeSettings();
-
-                JSON jsonObject = JSON.ParseString(data);
-
-                value = jsonObject.zDeserialize(dataType, "fieldName", settings);
-
-                FieldInfo myObject = value.GetType().GetField("myObject");
-
-                value = myObject.GetValue(value);
-
-                return true;
             }
 
-            value = null;
-            return false;
+            private void LocalSave()
+            {
+                StreamWriter writer = new StreamWriter(dataPath);
+
+                JSON gameDataJSon = JSON.Serialize(GameData);
+                string dataString = gameDataJSon.CreatePrettyString();
+
+                writer.WriteLine(dataString);
+
+                writer.Close();
+            }
+
+            private void Load()
+            {
+                if (!File.Exists(dataPath))
+                {
+                    GameData = new GameData();
+                    LocalSave();
+                }
+                else
+                {
+                    StreamReader reader = new StreamReader(dataPath);
+                    string dataString = reader.ReadToEnd();
+                    reader.Close();
+
+                    JSON gameDataJson = JSON.ParseString(dataString);
+                    GameData = gameDataJson.Deserialize<GameData>();
+
+                }
+
+                
+                foreach (IWantToBeSaved saveable in FindObjectsByType<MonoBehaviour>(FindObjectsSortMode.None).OfType<IWantToBeSaved>())
+                    saveable.Load();
+                
+            }
+
+            private static void Save()
+            {
+                instance.LocalSave();
+            }
+
+            public static void Save(object sender, string key, object data)
+            {
+                string fullKey = GetFullKey(sender, key);
+                string jsonData;
+                Type dataType = data.GetType();
+
+                Type serializableOjectType = typeof(SerializableObject<>).MakeGenericType(dataType);
+                object mySerializableObject = Activator.CreateInstance(serializableOjectType);
+
+                FieldInfo myObjectField = serializableOjectType.GetField("myObject");
+
+                // Set the myList field of the serializableList
+                myObjectField.SetValue(mySerializableObject, data);
+
+                // Finally Serialize it to JSon and save
+                jsonData = JSON.Serialize(mySerializableObject).CreatePrettyString();
+
+                // Before saving, set the dataType to SerializeList<>
+                dataType = serializableOjectType;
+
+                GameData.Add(fullKey, dataType, jsonData);
+                Save();
+            }
+
+            public static bool TryLoad(object sender, string key, out object value)
+            {
+                string fullKey = GetFullKey(sender, key);
+
+                if (GameData.TryGetValue(fullKey, out Type dataType, out string data))
+                {
+                    DeserializeSettings settings = new DeserializeSettings();
+
+                    JSON jsonObject = JSON.ParseString(data);
+
+                    value = jsonObject.zDeserialize(dataType, "fieldName", settings);
+
+                    FieldInfo myObject = value.GetType().GetField("myObject");
+
+                    value = myObject.GetValue(value);
+
+                    return true;
+                }
+
+                value = null;
+                return false;
+            }
+
+            private static string GetFullKey(object sender, string key)
+            {
+                string scriptType = sender.GetType().ToString();
+                string fullKey = scriptType + "_" + key;
+
+                return fullKey;
+            }
+
+
         }
 
-        private static string GetFullKey(object sender, string key)
+        [Serializable]
+        struct SerializableObject<T>
         {
-            string scriptType = sender.GetType().ToString();
-            string fullKey = scriptType + "_" + key;
-
-            return fullKey;
+            [SerializeField] public T myObject;
         }
-
-
     }
-
-    [Serializable]
-    struct SerializableObject<T>
-    {
-        [SerializeField] public T myObject;
-    }
-}

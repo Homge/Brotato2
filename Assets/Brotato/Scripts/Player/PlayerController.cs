@@ -12,18 +12,27 @@ public class PlayerController : MonoBehaviour, IPlayerStatsDependency
     [Header(" Settings ")]
     [SerializeField] private float baseMoveSpeed;
 
-    private Vector2 Key;
-
     private float moveSpeed;
+
+    // Chuyển việc lấy tham chiếu sang Awake để đảm bảo luôn chạy trước FixedUpdate
+    private void Awake()
+    {
+        rig = GetComponent<Rigidbody2D>();
+    }
 
     void Start()
     {
-        rig = GetComponent<Rigidbody2D>();
         moveSpeed = baseMoveSpeed;
     }   
 
     private void FixedUpdate()
-    {
+    {   
+        // Kiểm tra an toàn cho InputManager
+        if (InputManager.instance == null) return;
+
+        // Kiểm tra an toàn cho Rigidbody (đề phòng trường hợp component bị xóa nhầm)
+        if (rig == null) return;
+
         Vector2 move = InputManager.instance.GetMoveVector();
         rig.linearVelocity = move * moveSpeed;
     }
@@ -33,5 +42,4 @@ public class PlayerController : MonoBehaviour, IPlayerStatsDependency
         float moveSpeedPercent = playerStatsManager.GetStatValue(Stat.MoveSpeed) / 100;
         moveSpeed = baseMoveSpeed * (1 + moveSpeedPercent);
     }
-
 }

@@ -6,7 +6,7 @@ using UnityEngine.Pool;
 
 using Random = UnityEngine.Random;
 
-public class DropManager : MonoBehaviour
+public class DropManager : MonoBehaviour, IGameStateListener
 {
     [Header(" Elements ")]
     [SerializeField] private Candy candyPrefab;
@@ -103,4 +103,35 @@ public class DropManager : MonoBehaviour
 
     private void ReleaseCandy(Candy candy)  => candyPool.Release(candy);
     private void ReleaseCash(Cash cash)     => cashPool.Release(cash);
+    public void GameStateChangedCallback(GameState gameState)
+    {
+        // Khi kết thúc wave (chuyển sang chuyển tiếp, cửa hàng, hoặc thua cuộc)
+        if (gameState == GameState.SHOP || gameState == GameState.WAVETRANSITION || gameState == GameState.GAMEOVER)
+        {
+            CleanUpDrops();
+        }
+    }
+
+    private void CleanUpDrops()
+    {
+       
+        Candy[] activeCandies = transform.GetComponentsInChildren<Candy>(false);
+        foreach (Candy candy in activeCandies)
+        {
+            candyPool.Release(candy);
+        }
+
+        Cash[] activeCash = transform.GetComponentsInChildren<Cash>(false);
+        foreach (Cash cash in activeCash)
+        {
+            cashPool.Release(cash);
+        }
+
+    
+        Chest[] activeChests = transform.GetComponentsInChildren<Chest>(false);
+        foreach (Chest chest in activeChests)
+        {
+            Destroy(chest.gameObject);
+        }
+    }
 }

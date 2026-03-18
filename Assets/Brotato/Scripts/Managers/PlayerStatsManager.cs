@@ -13,6 +13,7 @@ public class PlayerStatsManager : MonoBehaviour
     private Dictionary<Stat, float> playerStats = new Dictionary<Stat, float>();
     private Dictionary<Stat, float> addends = new Dictionary<Stat, float>();
     private Dictionary<Stat, float> objectAddends = new Dictionary<Stat, float>();
+    private Dictionary<Stat, float> synergyAddends = new Dictionary<Stat, float>();
 
     private void Awake()
     {
@@ -24,6 +25,7 @@ public class PlayerStatsManager : MonoBehaviour
         {
             addends.Add(kvp.Key, 0);
             objectAddends.Add(kvp.Key, 0);
+            synergyAddends.Add(kvp.Key, 0);
         }
     }
 
@@ -61,7 +63,7 @@ public class PlayerStatsManager : MonoBehaviour
         UpdatePlayerStats();
     }
 
-    public float GetStatValue(Stat stat) => playerStats[stat] + addends[stat] + objectAddends[stat];
+    public float GetStatValue(Stat stat) => playerStats[stat] + addends[stat] + objectAddends[stat] + synergyAddends[stat];
         
 
     private void UpdatePlayerStats()
@@ -82,4 +84,20 @@ public class PlayerStatsManager : MonoBehaviour
 
         UpdatePlayerStats();
     }
+    public void UpdateSynergyStats(Dictionary<Stat, float> newSynergyStats)
+{
+    List<Stat> keys = new List<Stat>(synergyAddends.Keys);
+    foreach (Stat key in keys)
+    {
+        synergyAddends[key] = 0;
+    }
+
+    foreach (KeyValuePair<Stat, float> kvp in newSynergyStats)
+    {
+        if (synergyAddends.ContainsKey(kvp.Key))
+            synergyAddends[kvp.Key] += kvp.Value;
+    }
+
+    UpdatePlayerStats();
+}
 }

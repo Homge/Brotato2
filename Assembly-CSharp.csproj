@@ -102,6 +102,7 @@
     <Compile Include="Assets\Brotato\Scripts\Shop\ShopItemContainer.cs" />
     <Compile Include="Assets\Brotato\Scripts\UI\StatContainer.cs" />
     <Compile Include="Assets\TotalJSON\Scripts\JBoolean.cs" />
+    <Compile Include="Assets\Brotato\Scripts\Managers\SynergyUIManager.cs" />
     <Compile Include="Assets\TotalJSON\Scripts\Exceptions\JArgumentException.cs" />
     <Compile Include="Assets\TotalJSON\Examples\SaveAndLoadFile.cs" />
     <Compile Include="Assets\Brotato\Scripts\Drops\DroppableCurrency.cs" />

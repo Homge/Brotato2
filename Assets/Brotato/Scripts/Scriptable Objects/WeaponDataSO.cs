@@ -22,6 +22,9 @@ public class WeaponDataSO : ScriptableObject
     [SerializeField] private float criticalChance;
     [SerializeField] private float criticalPercent;
     [SerializeField] private float range;
+    [Header(" Synergy Tags ")]
+    [SerializeField] private WeaponTag[] tags;
+    public WeaponTag[] Tags => tags;
 
     public Dictionary<Stat, float> BaseStats
     {
