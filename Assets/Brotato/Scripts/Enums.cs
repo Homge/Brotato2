@@ -8,6 +8,7 @@ public enum GameState
     STAGECOMPLETE,
     WAVETRANSITION,
     SHOP
+
 }
 
 public enum Stat

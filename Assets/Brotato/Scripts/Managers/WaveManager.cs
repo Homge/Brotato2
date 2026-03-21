@@ -7,6 +7,8 @@ using UnityEngine.Pool;
 [RequireComponent(typeof(WaveManagerUI))]
 public class WaveManager : MonoBehaviour, IGameStateListener
 {
+    public static WaveManager instance;
+
     [Header(" Elements ")]
     [SerializeField] private Player player;
     private WaveManagerUI ui;
@@ -21,18 +23,29 @@ public class WaveManager : MonoBehaviour, IGameStateListener
     [SerializeField] private Wave[] waves;
     private List<float> localCounters = new List<float>();
 
+    [Header(" Endless Mode ")]
+    [SerializeField] private bool isEndlessMode = false;
+    public static float DifficultyMultiplier { get; private set; } = 1f;
+
+    [Header(" Boss Settings ")]
+    [SerializeField] private GameObject bossPrefab;
+
     private void Awake()
     {
+        if (instance == null) instance = this;
         ui = GetComponent<WaveManagerUI>();
+
+        // Reset static field mỗi lần scene load để tránh bug khi chơi lại
+        DifficultyMultiplier = 1f;
     }
 
-    // Start is called before the first frame update
-    void Start()
+    public void EnableEndlessMode()
     {
-        
+        isEndlessMode = true;
     }
 
-    // Update is called once per frame
+    void Start() { }
+
     void Update()
     {
         if (!isTimerOn)
@@ -46,16 +59,39 @@ public class WaveManager : MonoBehaviour, IGameStateListener
             ui.UpdateTimerText(timerString);
         }
         else
+        {
             StartWaveTransition();
+        }
     }
 
     private void StartWave(int waveIndex)
     {
-        ui.UpdateWaveText("Wave " + (currentWaveIndex + 1) + " / " + waves.Length);
+        int actualIndex = waveIndex % waves.Length;
+
+        ui.UpdateWaveText("Wave " + (waveIndex + 1));
 
         localCounters.Clear();
-        foreach(WaveSegment segment in waves[waveIndex].segments)
+        foreach (WaveSegment segment in waves[actualIndex].segments)
             localCounters.Add(0);
+
+        // Spawn Boss:
+        // - Trong 10 wave đầu (editor): Boss được cấu hình sẵn trong Wave asset (spawnOnce segment),
+        //   không cần xử lý ở đây.
+        // - Endless (wave 11 trở đi): cứ mỗi bội của 10 thì spawn boss theo công thức.
+        //   waveIndex 9 = wave 10, waveIndex 19 = wave 20 ... (index bắt đầu từ 0)
+        bool isEndlessWave = isEndlessMode && waveIndex >= waves.Length;
+        bool isBossWave    = (waveIndex + 1) % 10 == 0;
+
+        if (isEndlessWave && isBossWave && bossPrefab != null)
+        {
+            // Wave 20 → 1 boss, Wave 30 → 2 boss, Wave 40 → 3 boss ...
+            // (wave 10 đã có trong editor nên endless bắt đầu tính từ wave 20)
+            int bossCount = (waveIndex + 1) / 10 - 1;
+            bossCount = Mathf.Max(1, bossCount); // ít nhất 1 boss
+
+            for (int i = 0; i < bossCount; i++)
+                Instantiate(bossPrefab, GetSpawnPosition(), Quaternion.identity, transform);
+        }
 
         timer = 0;
         isTimerOn = true;
@@ -63,21 +99,21 @@ public class WaveManager : MonoBehaviour, IGameStateListener
 
     private void ManageCurrentWave()
     {
-        Wave currentWave = waves[currentWaveIndex];
+        Wave currentWave = waves[currentWaveIndex % waves.Length];
 
         for (int i = 0; i < currentWave.segments.Count; i++)
         {
             WaveSegment segment = currentWave.segments[i];
-
-            float tStart    = segment.tStartEnd.x / 100 * waveDuration;
-            float tEnd      = segment.tStartEnd.y / 100 * waveDuration;
+            float tStart = segment.tStartEnd.x / 100f * waveDuration;
+            float tEnd   = segment.tStartEnd.y / 100f * waveDuration;
 
             if (timer < tStart || timer > tEnd)
                 continue;
 
             float timeSinceSegmentStart = timer - tStart;
 
-            float spawnDelay = 1f / segment.spawnFrequency;
+            float scaledSpawnFrequency = segment.spawnFrequency * DifficultyMultiplier;
+            float spawnDelay           = 1f / scaledSpawnFrequency;
 
             if (timeSinceSegmentStart / spawnDelay > localCounters[i])
             {
@@ -95,20 +131,27 @@ public class WaveManager : MonoBehaviour, IGameStateListener
     private void StartWaveTransition()
     {
         isTimerOn = false;
-
         DefeatAllEnemies();
 
         currentWaveIndex++;
 
-        if (currentWaveIndex >= waves.Length)
+        // Vừa hoàn thành hết 10 wave editor mà chưa bật endless → hiện prompt
+        if (currentWaveIndex >= waves.Length && !isEndlessMode)
         {
             ui.UpdateTimerText("");
-            ui.UpdateWaveText("Stage Completed");
-
             GameManager.instance.SetGameState(GameState.STAGECOMPLETE);
+            return;
         }
-        else
-            GameManager.instance.WaveCompletedCallback();
+
+        // Tăng độ khó mỗi khi hoàn thành một vòng 10 wave trong endless
+        // (currentWaveIndex 20, 30, 40 ... tức là sau mỗi 10 wave kể từ khi endless bắt đầu)
+        if (isEndlessMode && currentWaveIndex > waves.Length && currentWaveIndex % waves.Length == 0)
+        {
+            DifficultyMultiplier += 0.2f;
+        }
+
+        ui.UpdateTimerText("");
+        GameManager.instance.WaveCompletedCallback();
     }
 
     private void StartNextWave()
@@ -124,8 +167,8 @@ public class WaveManager : MonoBehaviour, IGameStateListener
 
     private Vector2 GetSpawnPosition()
     {
-        Vector2 direction = Random.onUnitSphere;
-        Vector2 offset = direction.normalized * Random.Range(6, 10);
+        Vector2 direction      = Random.onUnitSphere;
+        Vector2 offset         = direction.normalized * Random.Range(6, 10);
         Vector2 targetPosition = (Vector2)player.transform.position + offset;
 
         targetPosition.x = Mathf.Clamp(targetPosition.x, -Constants.arenaSize.x / 2, Constants.arenaSize.x / 2);
@@ -136,7 +179,7 @@ public class WaveManager : MonoBehaviour, IGameStateListener
 
     public void GameStateChangedCallback(GameState gameState)
     {
-        switch(gameState)
+        switch (gameState)
         {
             case GameState.GAME:
                 StartNextWave();
@@ -150,8 +193,6 @@ public class WaveManager : MonoBehaviour, IGameStateListener
     }
 }
 
-
-
 [System.Serializable]
 public struct Wave
 {
@@ -162,8 +203,9 @@ public struct Wave
 [System.Serializable]
 public struct WaveSegment
 {
-    [MinMaxSlider(0, 100)] public Vector2 tStartEnd;  
-    public float spawnFrequency;    
+    [MinMaxSlider(0, 100)] public Vector2 tStartEnd;
+    public float spawnFrequency;
+    public int spawnAmount;
     public GameObject prefab;
     public bool spawnOnce;
 }

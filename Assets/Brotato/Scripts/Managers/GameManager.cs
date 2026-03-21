@@ -77,6 +77,18 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 1;
         ManageGameover();
     }
+    public void ContinueToEndlessMode()
+    {
+        WaveManager.instance.EnableEndlessMode();
+        // Tiếp tục luồng game bình thường (vào Shop hoặc Nâng cấp)
+        WaveCompletedCallback(); 
+    }
+
+    public void DeclineEndlessMode()
+    {
+        // Chọn ngừng chơi -> Kết thúc màn
+        SetGameState(GameState.STAGECOMPLETE); 
+    }
 }
 
 public interface IGameStateListener

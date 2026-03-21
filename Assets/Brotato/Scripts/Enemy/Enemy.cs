@@ -42,7 +42,9 @@ public abstract class Enemy : MonoBehaviour
     // Start is called before the first frame update
     protected virtual void Start()
     {
+        maxHealth = Mathf.RoundToInt(maxHealth * WaveManager.DifficultyMultiplier);
         health = maxHealth;
+
         movement = GetComponent<EnemyMovement>();
         player = FindFirstObjectByType<Player>();
 

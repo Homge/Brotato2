@@ -31,13 +31,17 @@ public class InputManager : MonoBehaviour
     {
         
     }
-    public Vector2 GetMoveVector()
-    {
-        if (SystemInfo.deviceType == DeviceType.Desktop)
-            return GetDesktopMoveVector();
-        else
-            return playerJoystick.GetMoveVector();
-    }
+   public Vector2 GetMoveVector()
+{
+    Vector2 move;
+    if (SystemInfo.deviceType == DeviceType.Desktop)
+        move = GetDesktopMoveVector();
+    else
+        move = playerJoystick.GetMoveVector();
+
+    // Clamp magnitude về tối đa 1 để tránh chạy nhanh hơn bình thường
+    return Vector2.ClampMagnitude(move, 1f);
+}
 
     private Vector2 GetDesktopMoveVector()
     {

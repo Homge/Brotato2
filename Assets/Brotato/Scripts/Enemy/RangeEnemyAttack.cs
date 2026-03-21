@@ -22,6 +22,7 @@ public class RangeEnemyAttack : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        damage = Mathf.RoundToInt(damage * WaveManager.DifficultyMultiplier);
         attackDelay = 1f / attackFrequency;
         attackTimer = attackDelay;
 

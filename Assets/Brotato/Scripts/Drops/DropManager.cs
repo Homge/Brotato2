@@ -77,9 +77,10 @@ public class DropManager : MonoBehaviour, IGameStateListener
        DropChest(BossPosition);
     }
 
-    private void EnemyPassedAwayCallback(Vector2 enemyPosition)
+   private void EnemyPassedAwayCallback(Vector2 enemyPosition)
     {
-        bool shouldSpawnCash = Random.Range(0, 101) <= cashDropChance;
+        int scaledCashChance = Mathf.Min(100, Mathf.RoundToInt(cashDropChance * Mathf.Sqrt(WaveManager.DifficultyMultiplier)));
+        bool shouldSpawnCash = Random.Range(0, 101) <= scaledCashChance;
 
         DroppableCurrency dropppable = shouldSpawnCash ? cashPool.Get() : candyPool.Get();
         dropppable.transform.position = enemyPosition;

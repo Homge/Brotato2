@@ -18,6 +18,8 @@ public class UIManager : MonoBehaviour, IGameStateListener
     [SerializeField] private GameObject characterSelectionPanel;
     [SerializeField] private GameObject settingsPanel;
 
+    // endlessPromptPanel đã bỏ — STAGECOMPLETE thay thế hoàn toàn
+
     private List<GameObject> panels = new List<GameObject>();
 
     private void Awake()
@@ -33,29 +35,24 @@ public class UIManager : MonoBehaviour, IGameStateListener
             shopPanel
         });
 
-
-
-        GameManager.onGamePaused    += GamePausedCallback;
-        GameManager.onGameResumed   += GameResumedCallback;
+        GameManager.onGamePaused  += GamePausedCallback;
+        GameManager.onGameResumed += GameResumedCallback;
 
         pausePanel.SetActive(false);
         HideRestartConfirmationPanel();
-
         HideCharacterSelection();
-
         HideSettings();
     }
 
-    
     private void OnDestroy()
     {
-        GameManager.onGamePaused    -= GamePausedCallback;
-        GameManager.onGameResumed   -= GameResumedCallback; 
+        GameManager.onGamePaused  -= GamePausedCallback;
+        GameManager.onGameResumed -= GameResumedCallback;
     }
 
     public void GameStateChangedCallback(GameState gameState)
     {
-        switch(gameState)
+        switch (gameState)
         {
             case GameState.MENU:
                 ShowPanel(menuPanel);
@@ -73,6 +70,9 @@ public class UIManager : MonoBehaviour, IGameStateListener
                 ShowPanel(gameoverPanel);
                 break;
 
+            // STAGECOMPLETE: hiện panel với 2 nút
+            // - "Continue" → GameManager.ContinueToEndlessMode()
+            // - "Menu"     → GameManager.ManageGameover()
             case GameState.STAGECOMPLETE:
                 ShowPanel(stageCompletePanel);
                 break;
@@ -93,11 +93,10 @@ public class UIManager : MonoBehaviour, IGameStateListener
             p.SetActive(p == panel);
     }
 
-
-    private void GamePausedCallback() => pausePanel.SetActive(true);
+    private void GamePausedCallback()  => pausePanel.SetActive(true);
     private void GameResumedCallback() => pausePanel.SetActive(false);
 
-    public void ShowRestartConfirmationPanel() => restartConfirmationPanel.SetActive(true);    
+    public void ShowRestartConfirmationPanel() => restartConfirmationPanel.SetActive(true);
     public void HideRestartConfirmationPanel() => restartConfirmationPanel.SetActive(false);
 
     public void ShowCharacterSelection() => characterSelectionPanel.SetActive(true);

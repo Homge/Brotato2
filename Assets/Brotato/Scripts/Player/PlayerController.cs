@@ -26,14 +26,16 @@ public class PlayerController : MonoBehaviour, IPlayerStatsDependency
     }   
 
     private void FixedUpdate()
-    {   
-        // Kiểm tra an toàn cho InputManager
+    {
         if (InputManager.instance == null) return;
-
-        // Kiểm tra an toàn cho Rigidbody (đề phòng trường hợp component bị xóa nhầm)
         if (rig == null) return;
 
         Vector2 move = InputManager.instance.GetMoveVector();
+
+        // Đảm bảo không bao giờ vượt quá magnitude 1
+        if (move.magnitude > 1f)
+            move = move.normalized;
+
         rig.linearVelocity = move * moveSpeed;
     }
 

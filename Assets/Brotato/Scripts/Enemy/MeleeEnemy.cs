@@ -14,10 +14,10 @@ public class MeleeEnemy : Enemy
     private float attackTimer;
 
     // Start is called before the first frame update
-    protected override void Start()
+   protected override void Start()
     {
         base.Start();
-
+        damage = Mathf.RoundToInt(damage * WaveManager.DifficultyMultiplier);
         attackDelay = 1f / attackFrequency;
     }
 
