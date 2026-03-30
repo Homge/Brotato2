@@ -29,12 +29,7 @@ public class WaveTransitionManager : MonoBehaviour, IGameStateListener
 
     private void Awake()
     {
-        if (instance == null)
-            instance = this;
-        else
-            Destroy(gameObject);
-
-        Chest.onCollected += ChestCollectedCallback;
+      instance = this;
     }
 
     private void OnDestroy()

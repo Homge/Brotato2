@@ -11,10 +11,7 @@ public class StatContainerManager : MonoBehaviour
 
     private void Awake()
     {
-        if (instance == null)
-            instance = this;
-        else
-            Destroy(gameObject);
+       instance = this;
     }
 
     private void GenerateContainers(Dictionary<Stat, float> statDictionnary, Transform parent)

@@ -32,7 +32,7 @@ public class SynergyUIManager : MonoBehaviour
                 if (currentCount >= syn.requiredCount)
                 {
                     // Đạt mốc kích hoạt (In màu xanh)
-                    displayText += $"<color=#00FF00>{syn.synergyName}: {currentCount}/{syn.requiredCount} (Kích hoạt)</color>\n";
+                    displayText += $"<color=#00FF00>{syn.synergyName}: {currentCount}/{syn.requiredCount} (Activited)</color>\n";
                 }
                 else
                 {

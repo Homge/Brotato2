@@ -18,12 +18,7 @@ public class CurrencyManager : MonoBehaviour, IWantToBeSaved
 
     private void Awake()
     {
-        if (instance == null)
-            instance = this;
-        else
-            Destroy(gameObject);
-
-        //AddPremiumCurrency(PlayerPrefs.GetInt(premiumCurrencyKey, 100), false);
+        instance = this;
 
         Candy.onCollected += CandyCollectedCallback;
         Cash.onCollected += CashCollectedCallback;

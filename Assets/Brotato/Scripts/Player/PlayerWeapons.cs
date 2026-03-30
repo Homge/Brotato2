@@ -11,16 +11,9 @@ public class PlayerWeapons : MonoBehaviour
     [SerializeField] private SynergyDefinition[] availableSynergies;
     [SerializeField] private PlayerStatsManager playerStatsManager;
 
-    void Start()
-    {
-        
-    }
+    void Start() { }
+    void Update() { }
 
-    void Update()
-    {
-        
-    }
-    
     public bool TryAddWeapon(WeaponDataSO weapon, int level)
     {
         for (int i = 0; i < weaponPositions.Length; i++)
@@ -34,6 +27,17 @@ public class PlayerWeapons : MonoBehaviour
         }
 
         return false;
+    }
+
+    /// Thêm vào đúng slot chỉ định — dùng khi load save
+    public bool TryAddWeaponAtSlot(WeaponDataSO weapon, int level, int slotIndex)
+    {
+        if (slotIndex < 0 || slotIndex >= weaponPositions.Length) return false;
+        if (weaponPositions[slotIndex].Weapon != null) return false;
+
+        weaponPositions[slotIndex].AssignWeapon(weapon.Prefab, level);
+        EvaluateSynergies();
+        return true;
     }
 
     public void RecycleWeapon(int weaponIndex)
@@ -57,7 +61,7 @@ public class PlayerWeapons : MonoBehaviour
     {
         List<Weapon> weapons = new List<Weapon>();
 
-        foreach(WeaponPosition weaponPosition in weaponPositions)
+        foreach (WeaponPosition weaponPosition in weaponPositions)
         {
             if (weaponPosition.Weapon == null)
                 weapons.Add(null);
@@ -72,7 +76,6 @@ public class PlayerWeapons : MonoBehaviour
     {
         if (playerStatsManager == null) return;
 
-        // 1. Đếm số lượng Tag hiện có trên các vũ khí đang trang bị
         Dictionary<WeaponTag, int> tagCounts = new Dictionary<WeaponTag, int>();
 
         foreach (WeaponPosition wp in weaponPositions)
@@ -83,13 +86,12 @@ public class PlayerWeapons : MonoBehaviour
                 {
                     if (!tagCounts.ContainsKey(tag))
                         tagCounts[tag] = 0;
-                    
+
                     tagCounts[tag]++;
                 }
             }
         }
 
-        // 2. Tính toán tổng chỉ số cộng thêm từ các Synergy đủ điều kiện
         Dictionary<Stat, float> totalSynergyBonuses = new Dictionary<Stat, float>();
 
         if (availableSynergies != null)
@@ -112,12 +114,13 @@ public class PlayerWeapons : MonoBehaviour
             }
         }
 
-        // 3. Gửi tổng chỉ số mới sang PlayerStatsManager
         playerStatsManager.UpdateSynergyStats(totalSynergyBonuses);
     }
+
     public Dictionary<WeaponTag, int> GetTagCounts()
     {
         Dictionary<WeaponTag, int> tagCounts = new Dictionary<WeaponTag, int>();
+
         foreach (WeaponPosition wp in weaponPositions)
         {
             if (wp.Weapon != null && wp.Weapon.WeaponData != null && wp.Weapon.WeaponData.Tags != null)
@@ -129,13 +132,13 @@ public class PlayerWeapons : MonoBehaviour
                 }
             }
         }
+
         return tagCounts;
     }
 
     public SynergyDefinition[] GetAvailableSynergies() => availableSynergies;
 }
 
-// Chuyển các struct ra ngoài class để tránh lỗi scope
 [System.Serializable]
 public struct StatBoost
 {
@@ -149,5 +152,5 @@ public struct SynergyDefinition
     public string synergyName;
     public WeaponTag requiredTag;
     public int requiredCount;
-    public StatBoost[] boosts; 
+    public StatBoost[] boosts;
 }

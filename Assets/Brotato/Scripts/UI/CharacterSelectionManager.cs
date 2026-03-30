@@ -119,6 +119,10 @@ public class CharacterSelectionManager : MonoBehaviour, IWantToBeSaved
         if(Sijil.TryLoad(this, unlockedStatesKey, out object unlockedStatesObject))
             unlockedStates = (List<bool>)unlockedStatesObject;
 
+        // Ensure unlockedStates matches character count (handles newly added characters)
+        while (unlockedStates.Count < characterDatas.Length)
+            unlockedStates.Add(false);
+
         if (Sijil.TryLoad(this, lastSelectedCharacterKey, out object lastSelectedCharacterObject))
             lastSelectedCharacterIndex = (int)lastSelectedCharacterObject;
 

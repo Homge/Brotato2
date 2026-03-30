@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [RequireComponent(typeof(PlayerHealth), typeof(PlayerLevel))]
-public class Player : MonoBehaviour
+public class Player : MonoBehaviour, IGameStateListener
 {
     public static Player instance;
 
@@ -16,10 +16,7 @@ public class Player : MonoBehaviour
 
     private void Awake()
     {
-        if (instance == null)
-            instance = this;
-        else
-            Destroy(gameObject);
+        instance = this;
 
         playerHealth = GetComponent<PlayerHealth>();
         playerLevel = GetComponent<PlayerLevel>();
@@ -47,6 +44,11 @@ public class Player : MonoBehaviour
     void Update()
     {
         
+    }
+    public void GameStateChangedCallback(GameState gameState)
+    {
+        if (gameState == GameState.GAME)
+            transform.position = Vector3.zero;
     }
 
     public void TakeDamage(int damage)

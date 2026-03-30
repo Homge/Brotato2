@@ -10,9 +10,9 @@ public class PlayerStatsManager : MonoBehaviour
     [SerializeField] private CharacterDataSO playerData;
 
     [Header(" Settings ")]
-    private Dictionary<Stat, float> playerStats = new Dictionary<Stat, float>();
-    private Dictionary<Stat, float> addends = new Dictionary<Stat, float>();
-    private Dictionary<Stat, float> objectAddends = new Dictionary<Stat, float>();
+    private Dictionary<Stat, float> playerStats    = new Dictionary<Stat, float>();
+    private Dictionary<Stat, float> addends        = new Dictionary<Stat, float>();
+    private Dictionary<Stat, float> objectAddends  = new Dictionary<Stat, float>();
     private Dictionary<Stat, float> synergyAddends = new Dictionary<Stat, float>();
 
     private void Awake()
@@ -34,12 +34,11 @@ public class PlayerStatsManager : MonoBehaviour
         CharacterSelectionManager.onCharacterSelected -= CharacterSelectedCallback;
     }
 
-
     void Start() => UpdatePlayerStats();
 
     public void AddPlayerStat(Stat stat, float value)
     {
-        if (addends.ContainsKey(stat))            
+        if (addends.ContainsKey(stat))
             addends[stat] += value;
         else
             Debug.LogError($"The key {stat} has not been found, this is not normal !!! Review your code !!!!");
@@ -50,7 +49,7 @@ public class PlayerStatsManager : MonoBehaviour
     public void AddObject(Dictionary<Stat, float> objectStats)
     {
         foreach (KeyValuePair<Stat, float> kvp in objectStats)
-            objectAddends[kvp.Key] += kvp.Value;        
+            objectAddends[kvp.Key] += kvp.Value;
 
         UpdatePlayerStats();
     }
@@ -58,13 +57,19 @@ public class PlayerStatsManager : MonoBehaviour
     public void RemoveObjectStats(Dictionary<Stat, float> objectStats)
     {
         foreach (KeyValuePair<Stat, float> kvp in objectStats)
-            objectAddends[kvp.Key] -= kvp.Value;        
+            objectAddends[kvp.Key] -= kvp.Value;
 
         UpdatePlayerStats();
     }
 
-    public float GetStatValue(Stat stat) => playerStats[stat] + addends[stat] + objectAddends[stat] + synergyAddends[stat];
-        
+    public float GetStatValue(Stat stat) =>
+        playerStats[stat] + addends[stat] + objectAddends[stat] + synergyAddends[stat];
+
+    /// Trả về addends để SaveManager lưu lại
+    public Dictionary<Stat, float> GetAddends()
+    {
+        return new Dictionary<Stat, float>(addends);
+    }
 
     private void UpdatePlayerStats()
     {
@@ -76,28 +81,23 @@ public class PlayerStatsManager : MonoBehaviour
             dependency.UpdateStats(this);
     }
 
-
     private void CharacterSelectedCallback(CharacterDataSO characterData)
     {
-        playerData = characterData;
+        playerData  = characterData;
         playerStats = playerData.BaseStats;
+        UpdatePlayerStats();
+    }
+
+    public void UpdateSynergyStats(Dictionary<Stat, float> newSynergyStats)
+    {
+        List<Stat> keys = new List<Stat>(synergyAddends.Keys);
+        foreach (Stat key in keys)
+            synergyAddends[key] = 0;
+
+        foreach (KeyValuePair<Stat, float> kvp in newSynergyStats)
+            if (synergyAddends.ContainsKey(kvp.Key))
+                synergyAddends[kvp.Key] += kvp.Value;
 
         UpdatePlayerStats();
     }
-    public void UpdateSynergyStats(Dictionary<Stat, float> newSynergyStats)
-{
-    List<Stat> keys = new List<Stat>(synergyAddends.Keys);
-    foreach (Stat key in keys)
-    {
-        synergyAddends[key] = 0;
-    }
-
-    foreach (KeyValuePair<Stat, float> kvp in newSynergyStats)
-    {
-        if (synergyAddends.ContainsKey(kvp.Key))
-            synergyAddends[kvp.Key] += kvp.Value;
-    }
-
-    UpdatePlayerStats();
-}
 }

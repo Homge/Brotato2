@@ -19,6 +19,10 @@ public class PlayerLevel : MonoBehaviour
     [Header(" DEBUG ")]
     [SerializeField] private bool DEBUG;
 
+    // ── Properties cho SaveManager ──
+    public int CurrentLevel => level;
+    public int CurrentXp    => currentXp;
+
     private void Awake()
     {
         Candy.onCollected += CandyCollectedCallback;
@@ -29,9 +33,17 @@ public class PlayerLevel : MonoBehaviour
         Candy.onCollected -= CandyCollectedCallback;
     }
 
-    // Start is called before the first frame update
     void Start()
     {
+        UpdateRequiredXp();
+        UpdateVisuals();
+    }
+
+    /// Gọi từ RunLoader khi load save
+    public void LoadFromSave(int savedLevel, int savedXp)
+    {
+        level     = savedLevel;
+        currentXp = savedXp;
         UpdateRequiredXp();
         UpdateVisuals();
     }
@@ -40,7 +52,7 @@ public class PlayerLevel : MonoBehaviour
 
     private void UpdateVisuals()
     {
-        xpBar.value = (float)currentXp / requiredXp;
+        xpBar.value    = (float)currentXp / requiredXp;
         levelText.text = "lvl " + (level + 1);
     }
 
@@ -48,7 +60,7 @@ public class PlayerLevel : MonoBehaviour
     {
         currentXp++;
 
-        if(currentXp >= requiredXp)
+        if (currentXp >= requiredXp)
             LevelUp();
 
         UpdateVisuals();
@@ -64,10 +76,10 @@ public class PlayerLevel : MonoBehaviour
 
     public bool HasLeveledUp()
     {
-        if(DEBUG)
+        if (DEBUG)
             return true;
 
-        if(levelsEarnedThisWave > 0)
+        if (levelsEarnedThisWave > 0)
         {
             levelsEarnedThisWave--;
             return true;

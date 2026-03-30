@@ -73,7 +73,7 @@ public class WeaponSelectionManager : MonoBehaviour, IGameStateListener
 
         WeaponDataSO weaponData = starterWeapons[Random.Range(0, starterWeapons.Length)];
 
-        int level = Random.Range(0, 4);
+        int level = 0;
 
         containerInstance.Configure(weaponData, level);
 

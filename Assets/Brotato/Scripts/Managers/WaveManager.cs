@@ -30,18 +30,24 @@ public class WaveManager : MonoBehaviour, IGameStateListener
     [Header(" Boss Settings ")]
     [SerializeField] private GameObject bossPrefab;
 
-    private void Awake()
-    {
-        if (instance == null) instance = this;
-        ui = GetComponent<WaveManagerUI>();
+    // ── Properties cho SaveManager ──
+    public int CurrentWaveIndex => currentWaveIndex;
+    public bool IsEndlessMode   => isEndlessMode;
 
-        // Reset static field mỗi lần scene load để tránh bug khi chơi lại
-        DifficultyMultiplier = 1f;
+     private void Awake()
+    {
+        instance = this;
+        ui = GetComponent<WaveManagerUI>();
     }
 
-    public void EnableEndlessMode()
+    public void EnableEndlessMode() => isEndlessMode = true;
+
+    /// Gọi từ RunLoader khi load save
+    public void LoadFromSave(int waveIndex, bool endless, float diffMultiplier)
     {
-        isEndlessMode = true;
+        currentWaveIndex     = waveIndex;
+        isEndlessMode        = endless;
+        DifficultyMultiplier = diffMultiplier;
     }
 
     void Start() { }
@@ -74,21 +80,12 @@ public class WaveManager : MonoBehaviour, IGameStateListener
         foreach (WaveSegment segment in waves[actualIndex].segments)
             localCounters.Add(0);
 
-        // Spawn Boss:
-        // - Trong 10 wave đầu (editor): Boss được cấu hình sẵn trong Wave asset (spawnOnce segment),
-        //   không cần xử lý ở đây.
-        // - Endless (wave 11 trở đi): cứ mỗi bội của 10 thì spawn boss theo công thức.
-        //   waveIndex 9 = wave 10, waveIndex 19 = wave 20 ... (index bắt đầu từ 0)
         bool isEndlessWave = isEndlessMode && waveIndex >= waves.Length;
         bool isBossWave    = (waveIndex + 1) % 10 == 0;
 
         if (isEndlessWave && isBossWave && bossPrefab != null)
         {
-            // Wave 20 → 1 boss, Wave 30 → 2 boss, Wave 40 → 3 boss ...
-            // (wave 10 đã có trong editor nên endless bắt đầu tính từ wave 20)
-            int bossCount = (waveIndex + 1) / 10 - 1;
-            bossCount = Mathf.Max(1, bossCount); // ít nhất 1 boss
-
+            int bossCount = Mathf.Max(1, (waveIndex + 1) / 10 - 1);
             for (int i = 0; i < bossCount; i++)
                 Instantiate(bossPrefab, GetSpawnPosition(), Quaternion.identity, transform);
         }
@@ -111,9 +108,8 @@ public class WaveManager : MonoBehaviour, IGameStateListener
                 continue;
 
             float timeSinceSegmentStart = timer - tStart;
-
-            float scaledSpawnFrequency = segment.spawnFrequency * DifficultyMultiplier;
-            float spawnDelay           = 1f / scaledSpawnFrequency;
+            float scaledSpawnFrequency  = segment.spawnFrequency * DifficultyMultiplier;
+            float spawnDelay            = 1f / scaledSpawnFrequency;
 
             if (timeSinceSegmentStart / spawnDelay > localCounters[i])
             {
@@ -135,29 +131,27 @@ public class WaveManager : MonoBehaviour, IGameStateListener
 
         currentWaveIndex++;
 
-        // Vừa hoàn thành hết 10 wave editor mà chưa bật endless → hiện prompt
         if (currentWaveIndex >= waves.Length && !isEndlessMode)
         {
             ui.UpdateTimerText("");
             GameManager.instance.SetGameState(GameState.STAGECOMPLETE);
+            // Run hoàn thành → xóa save
+            SaveManager.instance?.DeleteSave();
             return;
         }
 
-        // Tăng độ khó mỗi khi hoàn thành một vòng 10 wave trong endless
-        // (currentWaveIndex 20, 30, 40 ... tức là sau mỗi 10 wave kể từ khi endless bắt đầu)
         if (isEndlessMode && currentWaveIndex > waves.Length && currentWaveIndex % waves.Length == 0)
-        {
             DifficultyMultiplier += 0.2f;
-        }
 
         ui.UpdateTimerText("");
+
+        // ── Auto-save sau mỗi wave ──
+        SaveManager.instance?.SaveRun();
+
         GameManager.instance.WaveCompletedCallback();
     }
 
-    private void StartNextWave()
-    {
-        StartWave(currentWaveIndex);
-    }
+    private void StartNextWave() => StartWave(currentWaveIndex);
 
     private void DefeatAllEnemies()
     {
@@ -188,6 +182,8 @@ public class WaveManager : MonoBehaviour, IGameStateListener
             case GameState.GAMEOVER:
                 isTimerOn = false;
                 DefeatAllEnemies();
+                // Thua → xóa save
+                SaveManager.instance?.DeleteSave();
                 break;
         }
     }

@@ -2,15 +2,15 @@
 	"data": {
 		"CurrencyManager_PremiumCurrency": {
 			"dataType": "Tabsil.Sijil.SerializableObject`1[[System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]], Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null",
-			"value": "{\r\n\t\"myObject\": 327013\r\n}"
+			"value": "{\r\n\t\"myObject\": 721417\r\n}"
 		},
 		"CharacterSelectionManager_unlockedStatesKey": {
 			"dataType": "Tabsil.Sijil.SerializableObject`1[[System.Collections.Generic.List`1[[System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]], Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null",
-			"value": "{\r\n\t\"myObject\": [\r\n\t\ttrue,\r\n\t\ttrue,\r\n\t\ttrue,\r\n\t\ttrue\r\n\t]\r\n}"
+			"value": "{\r\n\t\"myObject\": [\r\n\t\ttrue,\r\n\t\ttrue,\r\n\t\ttrue,\r\n\t\ttrue,\r\n\t\ttrue\r\n\t]\r\n}"
 		},
 		"CharacterSelectionManager_lastSelectedCharacterKey": {
 			"dataType": "Tabsil.Sijil.SerializableObject`1[[System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]], Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null",
-			"value": "{\r\n\t\"myObject\": 2\r\n}"
+			"value": "{\r\n\t\"myObject\": 1\r\n}"
 		},
 		"SettingsManager_sfx": {
 			"dataType": "Tabsil.Sijil.SerializableObject`1[[System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]], Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null",

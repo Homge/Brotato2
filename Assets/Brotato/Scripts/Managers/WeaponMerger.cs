@@ -19,10 +19,7 @@ public class WeaponMerger : MonoBehaviour
 
     private void Awake()
     {
-        if (instance == null)
-            instance = this;
-        else
-            Destroy(gameObject);
+       instance = this;
     }
 
     public bool CanMerge(Weapon weapon)

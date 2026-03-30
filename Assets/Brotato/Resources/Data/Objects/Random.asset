@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Random
   m_EditorClassIdentifier: 
   <Name>k__BackingField: Shield
-  <Icon>k__BackingField: {fileID: -2757887451555568444, guid: 8fffe40f3ebda0d469b31ca1513a3248, type: 3}
+  <Icon>k__BackingField: {fileID: 21300000, guid: 7524ab7a7f453474dbfc0e05e8b92539, type: 3}
   <Price>k__BackingField: 50
   <RecyclePrice>k__BackingField: 75
   <Rarity>k__BackingField: 2
@@ -22,5 +22,5 @@ MonoBehaviour:
     value: 10
   - stat: 5
     value: 5
-  - stat: 1
+  - stat: 9
     value: -5
