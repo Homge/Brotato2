@@ -16,13 +16,14 @@ public class RangeWeapon : Weapon
     [Header(" Actions ")]
     public static Action onBulletShot;
 
-    // Start is called before the first frame update
+    // Biến lưu trữ chỉ số xuyên thấu cộng thêm từ Item
+    private int extraPierce;
+
     void Start()
     {
         bulletPool = new ObjectPool<Bullet>(CreateFunction, ActionOnGet, ActionOnRelease, ActionOnDestroy);
     }
 
-    // Update is called once per frame
     void Update()
     {
         AutoAim();
@@ -32,7 +33,6 @@ public class RangeWeapon : Weapon
     {
         Bullet bulletInstance = Instantiate(bulletPrefab, shootingPoint.position, Quaternion.identity);
         bulletInstance.Configure(this);
-
         return bulletInstance;
     }
 
@@ -61,12 +61,11 @@ public class RangeWeapon : Weapon
     private void AutoAim()
     {
         Enemy closestEnemy = GetClosestEnemy();
-
         Vector2 targetUpVector = Vector3.up;
 
         if (closestEnemy != null)
         {
-            targetUpVector = (closestEnemy.GetCenter() -(Vector2)transform.position).normalized;
+            targetUpVector = (closestEnemy.GetCenter() - (Vector2)transform.position).normalized;
             transform.up = targetUpVector;
 
             ManageShooting();
@@ -79,7 +78,6 @@ public class RangeWeapon : Weapon
     private void ManageShooting()
     {
         attackTimer += Time.deltaTime;
-
         if (attackTimer >= attackDelay)
         {
             attackTimer = 0;
@@ -90,30 +88,30 @@ public class RangeWeapon : Weapon
     private void Shoot()
     {
         int damage = GetDamage(out bool isCriticalHit);
-
         Bullet bulletInstance = bulletPool.Get();
-        bulletInstance.Shoot(damage, transform.up, isCriticalHit);
+        
+        // Truyền extraPierce vào cho viên đạn
+        bulletInstance.Shoot(damage, transform.up, isCriticalHit, range, extraPierce);
 
         onBulletShot?.Invoke();
-
         PlayAttackSound();
     }
 
     public override void UpdateStats(PlayerStatsManager playerStatsManager)
     {
         ConfigureStats();
-
         damage = Mathf.RoundToInt(damage * (1 + playerStatsManager.GetStatValue(Stat.Attack) / 100));
         attackDelay /= 1 + (playerStatsManager.GetStatValue(Stat.AttackSpeed) / 100);
-
         criticalChance = Mathf.RoundToInt(criticalChance * (1 + playerStatsManager.GetStatValue(Stat.CriticalChance) / 100));
         criticalPercent += playerStatsManager.GetStatValue(Stat.CriticalPercent);
-
         range += playerStatsManager.GetStatValue(Stat.Range) / 10;
+
+        // Lấy chỉ số Pierce từ PlayerStatsManager
+        extraPierce = Mathf.RoundToInt(playerStatsManager.GetStatValue(Stat.Pierce));
     }
+
     public Vector2 GetCenter()
     {
         return (Vector2)transform.position + GetComponent<Collider2D>().offset;
     }
-
 }

@@ -16,6 +16,7 @@ public class ShopManagerUI : MonoBehaviour
     [SerializeField] private RectTransform inventoryClosePanel;
     private Vector2 inventoryOpenedPos;
     private Vector2 inventoryClosedPos;
+    [SerializeField] private GameObject synergyPanel;
 
     [Header(" Item Info Elements ")]
     [SerializeField] private RectTransform itemInfoSlidePanel;
@@ -139,7 +140,8 @@ public class ShopManagerUI : MonoBehaviour
 
     [NaughtyAttributes.Button]
     public void ShowItemInfo()
-    {
+    {   
+        if (synergyPanel != null) synergyPanel.SetActive(false);
         itemInfoSlidePanel.gameObject.SetActive(true);
 
         itemInfoSlidePanel.LeanCancel();
@@ -155,5 +157,6 @@ public class ShopManagerUI : MonoBehaviour
         itemInfoSlidePanel.LeanMove((Vector3)itemInfoClosedPos, .3f)
             .setEase(LeanTweenType.easeInCubic)
             .setOnComplete(() => itemInfoSlidePanel.gameObject.SetActive(false));
+            if (synergyPanel != null) synergyPanel.SetActive(true);
     }
 }

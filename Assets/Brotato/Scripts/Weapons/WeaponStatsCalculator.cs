@@ -14,6 +14,8 @@ public static class WeaponStatsCalculator
         {
             if (weaponData.Prefab.GetType() != typeof(RangeWeapon) && kvp.Key == Stat.Range)
                 calculatedStats.Add(kvp.Key, kvp.Value);
+            else if (kvp.Key == Stat.CriticalPercent || kvp.Key == Stat.CriticalChance)
+                calculatedStats.Add(kvp.Key, kvp.Value); 
             else
                 calculatedStats.Add(kvp.Key, kvp.Value * multiplier);
         }

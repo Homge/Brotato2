@@ -24,7 +24,8 @@ public enum Stat
     Armor,
     Luck,
     Dodge,
-    LifeSteal
+    LifeSteal,
+    Pierce
 }
 public enum WeaponTag
 {

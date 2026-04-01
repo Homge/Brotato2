@@ -104,8 +104,8 @@ public class WaveTransitionManager : MonoBehaviour, IGameStateListener
 
         for (int i = 0; i < upgradeContainers.Length; i++)
         {
-            int randomIndex = Random.Range(0, Enum.GetValues(typeof(Stat)).Length);
-            Stat stat = (Stat)Enum.GetValues(typeof(Stat)).GetValue(randomIndex);
+            int randomIndex = Random.Range(0, statValues.Length);
+            Stat stat = (Stat)statValues.GetValue(randomIndex);
 
             Sprite upgradeSprite = ResourcesManager.GetStatIcon(stat);
 
@@ -131,7 +131,6 @@ public class WaveTransitionManager : MonoBehaviour, IGameStateListener
     {
         buttonString = "";
         float value;
-
 
         switch (stat)
         {
@@ -226,4 +225,5 @@ public class WaveTransitionManager : MonoBehaviour, IGameStateListener
     {
         return chestsCollected > 0;
     }
+    private static readonly Array statValues = Enum.GetValues(typeof(Stat));
 }

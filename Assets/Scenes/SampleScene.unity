@@ -2325,6 +2325,7 @@ MonoBehaviour:
   playerStatsClosePanel: {fileID: 450840686}
   inventoryPanel: {fileID: 7362900004031736801}
   inventoryClosePanel: {fileID: 1676180599}
+  synergyPanel: {fileID: 2067029137}
   itemInfoSlidePanel: {fileID: 1824973255}
 --- !u!1 &161377383
 GameObject:
@@ -36241,7 +36242,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7549366517312986588, guid: 4025c60a8febd314cb305658f20cfafe, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -46.095364
+      value: -46.09546
       objectReference: {fileID: 0}
     - target: {fileID: 7619299793424797731, guid: 4025c60a8febd314cb305658f20cfafe, type: 3}
       propertyPath: m_AnchorMax.y
@@ -48240,7 +48241,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 213911297}
-  waveDuration: 6
+  waveDuration: 20
   waves:
   - name: Wave 00
     segments:
@@ -48256,7 +48257,7 @@ MonoBehaviour:
       spawnAmount: 0
       prefab: {fileID: 2648270535558056239, guid: d1f7d0e57ea943e4d9c297f626b089c4, type: 3}
       spawnOnce: 1
-  isEndlessMode: 0
+  isEndlessMode: 1
   bossPrefab: {fileID: 4853354547740364377, guid: b1304d1d3b662f147b3741bf86b6c56f, type: 3}
 --- !u!114 &1951177688
 MonoBehaviour:

@@ -84,7 +84,8 @@ public class PlayerHealth : MonoBehaviour, IPlayerStatsDependency
             return;
         }
 
-        float realDamage = damage * Mathf.Clamp(1 - (armor / 1000), 0, 10000); 
+        float damageMultiplier = armor >= 0 ? (100f / (100f + armor)) : (2f - (100f / (100f - armor)));
+        float realDamage = damage * damageMultiplier;
         realDamage = Mathf.Min(realDamage, health);
         health -= realDamage;
 

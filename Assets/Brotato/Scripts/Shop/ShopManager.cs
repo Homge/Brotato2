@@ -130,30 +130,47 @@ public class ShopManager : MonoBehaviour, IGameStateListener
     {
         float[] weights;
 
+        // 1. Cấu hình tỷ lệ gốc: Khóa các độ hiếm cao ở những wave đầu
         if (isEndless)
             weights = new float[] { 15f, 30f, 35f, 20f };
-        else if (waveIndex < 3)
-            weights = new float[] { 70f, 22f, 7f, 1f };
-        else if (waveIndex < 7)
-            weights = new float[] { 45f, 35f, 15f, 5f };
-        else
-            weights = new float[] { 25f, 35f, 28f, 12f };
+        else if (waveIndex <= 1) // Màn 1 và 2: Không có Rare, Epic
+            weights = new float[] { 95f, 5f, 0f, 0f }; 
+        else if (waveIndex < 5) // Màn 3 đến 5
+            weights = new float[] { 75f, 25f, 0f, 0f }; 
+        else if (waveIndex < 10) // Màn 6 đến 10: Mở khóa Rare
+            weights = new float[] { 50f, 35f, 15f, 0f }; 
+        else // Màn 11 trở lên: Mở khóa Epic
+            weights = new float[] { 25f, 35f, 28f, 12f }; 
 
-        // Luck shift: mỗi 10 luck dịch tối đa 3% từ Common sang các tier cao
-        // Giới hạn shift tối đa 30% để không phá vỡ cân bằng
+        // 2. Logic Luck: Giới hạn shift tỷ lệ để không phá vỡ giới hạn wave
         float shift = Mathf.Clamp(luck / 10f * 3f, 0f, 30f);
-
-        // Lấy từ Common (index 0), phân đều cho Uncommon/Rare/Epic
-        float actualShift = Mathf.Min(shift, weights[0] * 0.8f); // không lấy quá 80% Common
+        float actualShift = Mathf.Min(shift, weights[0] * 0.8f);
         weights[0] -= actualShift;
-        weights[1] += actualShift * 0.5f;
-        weights[2] += actualShift * 0.35f;
-        weights[3] += actualShift * 0.15f;
 
+        if (waveIndex < 5)
+        {
+            // Dưới wave 5: Luck chỉ tăng tỷ lệ ra Uncommon
+            weights[1] += actualShift;
+        }
+        else if (waveIndex < 10)
+        {
+            // Dưới wave 10: Luck chia đều cho Uncommon và Rare
+            weights[1] += actualShift * 0.6f;
+            weights[2] += actualShift * 0.4f;
+        }
+        else
+        {
+            // Wave cao: Luck tác động lên cả 3 cấp độ trên
+            weights[1] += actualShift * 0.4f;
+            weights[2] += actualShift * 0.4f;
+            weights[3] += actualShift * 0.2f;
+        }
+
+        // 3. Quay số ngẫu nhiên
         float total = 0f;
         foreach (float w in weights) total += w;
 
-        float roll       = Random.Range(0f, total);
+        float roll = Random.Range(0f, total);
         float cumulative = 0f;
 
         for (int i = 0; i < weights.Length; i++)

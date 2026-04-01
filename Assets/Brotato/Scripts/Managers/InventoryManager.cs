@@ -59,15 +59,12 @@ public class InventoryManager : MonoBehaviour, IGameStateListener
         inventoryItemsParent.Clear();
         pauseInventoryItemsParent.Clear();
 
-        // Player Weapons / Player Objects 
-
+        // 1. VŨ KHÍ (Giữ nguyên không gộp)
         Weapon[] weapons = playerWeapons.GetWeapons();
-
         for (int i = 0; i < weapons.Length; i++)
         {
             if (weapons[i] == null)
                 continue;
-
             InventoryItemContainer container = Instantiate(inventoryItemContainer, inventoryItemsParent);
             container.Configure(weapons[i], i, () => ShowItemInfo(container));
 
@@ -75,15 +72,29 @@ public class InventoryManager : MonoBehaviour, IGameStateListener
             pauseContainer.Configure(weapons[i], i, null);
         }
 
-        ObjectDataSO[] objectDatas = playerObjects.Objects.ToArray();
-
-        for (int i = 0; i < objectDatas.Length; i++)
+        // 2. VẬT PHẨM (Gộp lại bằng Dictionary)
+        Dictionary<ObjectDataSO, int> itemCounts = new Dictionary<ObjectDataSO, int>();
+        
+        // Đếm số lượng từng vật phẩm
+        foreach (ObjectDataSO obj in playerObjects.Objects)
         {
+            if (itemCounts.ContainsKey(obj))
+                itemCounts[obj]++;
+            else
+                itemCounts.Add(obj, 1);
+        }
+
+        // Khởi tạo UI dựa trên danh sách đã gộp
+        foreach (KeyValuePair<ObjectDataSO, int> kvp in itemCounts)
+        {
+            ObjectDataSO itemData = kvp.Key;
+            int quantity = kvp.Value;
+
             InventoryItemContainer container = Instantiate(inventoryItemContainer, inventoryItemsParent);
-            container.Configure(objectDatas[i], () => ShowItemInfo(container));
+            container.Configure(itemData, quantity, () => ShowItemInfo(container));
 
             InventoryItemContainer pauseContainer = Instantiate(inventoryItemContainer, pauseInventoryItemsParent);
-            pauseContainer.Configure(objectDatas[i], null);
+            pauseContainer.Configure(itemData, quantity, null);
         }        
     }
 

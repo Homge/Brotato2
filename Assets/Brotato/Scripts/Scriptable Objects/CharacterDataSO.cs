@@ -24,6 +24,7 @@ public class CharacterDataSO : ScriptableObject
     [SerializeField] private float luck;
     [SerializeField] private float dodge;
     [SerializeField] private float lifeSteal;
+    [SerializeField] private float pierce;
 
     public Dictionary<Stat, float> BaseStats 
     {
@@ -43,6 +44,7 @@ public class CharacterDataSO : ScriptableObject
                 {Stat.Luck,                     luck },
                 {Stat.Dodge,                    dodge },
                 {Stat.LifeSteal,                lifeSteal },
+                {Stat.Pierce,                   pierce }
             };
         }
 

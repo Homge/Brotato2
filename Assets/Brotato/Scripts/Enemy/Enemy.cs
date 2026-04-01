@@ -46,7 +46,7 @@ public abstract class Enemy : MonoBehaviour
         health = maxHealth;
 
         movement = GetComponent<EnemyMovement>();
-        player = FindFirstObjectByType<Player>();
+        player = Player.instance;
 
         if (player == null)
         {

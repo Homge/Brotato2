@@ -43,9 +43,9 @@ public abstract class Weapon : MonoBehaviour, IPlayerStatsDependency
 
     protected void PlayAttackSound()
     {
-        if (!AudioManager.instance.IsSFXOn)
+        if (AudioManager.instance == null || !AudioManager.instance.IsSFXOn || audioSource == null)
             return;
-
+        
         audioSource.pitch = Random.Range(.95f, 1.05f);
         audioSource.Play();
     }
@@ -120,4 +120,5 @@ public abstract class Weapon : MonoBehaviour, IPlayerStatsDependency
     }
 
     public void Upgrade() => UpgradeTo(Level + 1);
+    
 }

@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6acca0412c4f8545ba4c145e220c1a1, type: 3}
   m_Name: Bike
   m_EditorClassIdentifier: 
-  <Name>k__BackingField: Bike
-  <Icon>k__BackingField: {fileID: -460769226430981451, guid: e2b501b9b8126574ba147cee4db1cf55, type: 3}
+  <Name>k__BackingField: Shoes
+  <Icon>k__BackingField: {fileID: 21300000, guid: 09777c6673130274ca8d759ba7bfbf35, type: 3}
   <Price>k__BackingField: 125
   <RecyclePrice>k__BackingField: 75
   <Rarity>k__BackingField: 0

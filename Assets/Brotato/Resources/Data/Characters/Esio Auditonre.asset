@@ -10,20 +10,20 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: dcdf024a62014a346b76967f8181fc81, type: 3}
-  m_Name: Smirk
+  m_Name: Esio Auditonre
   m_EditorClassIdentifier: 
-  <Name>k__BackingField: Smirk
-  <Sprite>k__BackingField: {fileID: 21300000, guid: 7ee7aeee63c643342a6efd22a4cf751d, type: 3}
+  <Name>k__BackingField: Esio Auditonre
+  <Sprite>k__BackingField: {fileID: 2687616404215337403, guid: 7b91f0f965319aa42bcba499122e8e6d, type: 3}
   <PurchasePrice>k__BackingField: 1000
   attack: 10
-  attackSpeed: 0
-  criticalChance: 0
-  criticalPercent: 0
-  moveSpeed: 0
-  maxHealth: 0
+  attackSpeed: 10
+  criticalChance: 15
+  criticalPercent: 0.5
+  moveSpeed: 20
+  maxHealth: -15
   range: 10
   healthRecoverySpeed: 0
-  armor: 0
+  armor: -5
   luck: 0
-  dodge: 0
+  dodge: 25
   lifeSteal: 0
