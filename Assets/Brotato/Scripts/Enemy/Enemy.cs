@@ -52,6 +52,7 @@ public abstract class Enemy : MonoBehaviour
         {
             Debug.LogWarning("No player found, Auto-destroying...");
             Destroy(gameObject);
+            return;
         }
 
         StartSpawnSequence();
@@ -93,7 +94,7 @@ public abstract class Enemy : MonoBehaviour
         spawnIndicator.enabled = !visibility;
     }
 
-    public void TakeDamage(int damage, bool isCriticalHit)
+    public virtual void TakeDamage(int damage, bool isCriticalHit)
     {
         int realDamage = Mathf.Min(damage, health);
         health -= realDamage;

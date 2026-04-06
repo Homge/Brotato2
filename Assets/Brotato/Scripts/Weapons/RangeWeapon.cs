@@ -13,10 +13,8 @@ public class RangeWeapon : Weapon
     [Header(" Pooling ")]
     private ObjectPool<Bullet> bulletPool;
 
-    [Header(" Actions ")]
-    public static Action onBulletShot;
+    [Header(" Stats ")]
 
-    // Biến lưu trữ chỉ số xuyên thấu cộng thêm từ Item
     private int extraPierce;
 
     void Start()
@@ -92,8 +90,6 @@ public class RangeWeapon : Weapon
         
         // Truyền extraPierce vào cho viên đạn
         bulletInstance.Shoot(damage, transform.up, isCriticalHit, range, extraPierce);
-
-        onBulletShot?.Invoke();
         PlayAttackSound();
     }
 

@@ -1,134 +1,144 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class MeleeWeapon : Weapon
 {
-    enum State
-    {
-        Idle,
-        Attack
-    }
-
+    enum State { Idle, Attack }
     private State state;
 
     [Header(" Elements ")]
     [SerializeField] private Transform hitDetectionTransform;
     [SerializeField] private BoxCollider2D hitCollider;
 
-    [Header(" Settings ")]
-    private List<Enemy> damagedEnemies = new List<Enemy>();
+    [Header(" Animation Settings ")]
+    [SerializeField] private float animationSpeedMultiplier = 1.2f;
+    [SerializeField] private float damageWindowStart = 0.2f;
+    [SerializeField] private float damageWindowEnd = 0.8f;
 
-    // Start is called before the first frame update
+    [Header(" Settings ")]
+    private List<Enemy> damagedEnemiesThisSwing = new List<Enemy>();
+    private float currentAttackDuration;
+    private bool isDamagePhase;
+
     void Start()
     {
         state = State.Idle;
     }
 
-    // Update is called once per frame
     void Update()
     {
         switch (state)
         {
             case State.Idle:
-                AutoAim();
+                UpdateIdleState();
                 break;
-
             case State.Attack:
-                Attacking();
+                UpdateAttackState();
                 break;
         }
     }
 
-    private void AutoAim()
+    private void UpdateIdleState()
     {
         Enemy closestEnemy = GetClosestEnemy();
-
         Vector2 targetUpVector = Vector3.up;
 
         if (closestEnemy != null)
         {
             targetUpVector = (closestEnemy.transform.position - transform.position).normalized;
-            transform.up = targetUpVector;
+            transform.up = Vector3.Lerp(transform.up, targetUpVector, Time.deltaTime * aimLerp);
             ManageAttack();
         }
 
-        transform.up = Vector3.Lerp(transform.up, targetUpVector, Time.deltaTime * aimLerp);
-        IncrementAttackTimer();
+        attackTimer += Time.deltaTime;
     }
 
     private void ManageAttack()
     {
         if (attackTimer >= attackDelay)
         {
-            attackTimer = 0;
             StartAttack();
         }
     }
 
-    private void IncrementAttackTimer()
-    {
-        attackTimer += Time.deltaTime;
-    }
-
-    [NaughtyAttributes.Button]
     private void StartAttack()
     {
-        animator.Play("Attack");
         state = State.Attack;
+        attackTimer = 0;
+        currentAttackDuration = 0;
+        isDamagePhase = false;
+        damagedEnemiesThisSwing.Clear();
 
-        damagedEnemies.Clear();
-
-        animator.speed = 1f / attackDelay;
+        animator.Play("Attack");
+        animator.speed = (1f / attackDelay) * animationSpeedMultiplier;
 
         PlayAttackSound();
     }
 
-    private void Attacking()
+    private void UpdateAttackState()
     {
-        Attack();
+        currentAttackDuration += Time.deltaTime;
+        
+        // Tính toán phần trăm hoàn thành của chu kỳ đánh
+        float normalizedTime = currentAttackDuration / (attackDelay / animationSpeedMultiplier);
+
+        if (normalizedTime >= damageWindowStart && normalizedTime <= damageWindowEnd)
+        {
+            if (!isDamagePhase) isDamagePhase = true;
+            PerformDamageCheck();
+        }
+        else if (isDamagePhase)
+        {
+            isDamagePhase = false;
+        }
+
+        // Kết thúc chu kỳ đánh
+        if (currentAttackDuration >= attackDelay)
+        {
+            StopAttack();
+        }
     }
+
+  private void PerformDamageCheck()
+{
+  
+    Vector2 boxSize = hitCollider.size;
+    
+    boxSize.x *= hitDetectionTransform.lossyScale.x;
+    boxSize.y *= hitDetectionTransform.lossyScale.y;
+
+    Collider2D[] enemies = Physics2D.OverlapBoxAll(
+        hitDetectionTransform.position,
+        boxSize, 
+        hitDetectionTransform.eulerAngles.z, 
+        enemyMask
+    );
+
+    for (int i = 0; i < enemies.Length; i++)
+    {
+        Enemy enemy = enemies[i].GetComponent<Enemy>();
+
+        if (enemy != null && !damagedEnemiesThisSwing.Contains(enemy))
+        {
+            int damage = GetDamage(out bool isCriticalHit);
+            enemy.TakeDamage(damage, isCriticalHit);
+            damagedEnemiesThisSwing.Add(enemy);
+        }
+    }
+}
 
     private void StopAttack()
     {
         state = State.Idle;
-
-        // Clear the attacked enemies
-        // Damaged enemies list
-        damagedEnemies.Clear();
-    }
-
-    private void Attack()
-    {
-        Collider2D[] enemies = Physics2D.OverlapBoxAll
-            (
-            hitDetectionTransform.position,
-            hitCollider.bounds.size,
-            hitDetectionTransform.localEulerAngles.z,
-            enemyMask
-            );
-
-        for (int i = 0; i < enemies.Length; i++)
-        {
-            Enemy enemy = enemies[i].GetComponent<Enemy>();
-
-            if (!damagedEnemies.Contains(enemy))
-            {
-                int damage = GetDamage(out bool isCriticalHit);
-
-                enemy.TakeDamage(damage, isCriticalHit);
-                damagedEnemies.Add(enemy);
-            }
-        }
+        damagedEnemiesThisSwing.Clear();
+        isDamagePhase = false;
     }
 
     public override void UpdateStats(PlayerStatsManager playerStatsManager)
     {
         ConfigureStats();
-
         damage = Mathf.RoundToInt(damage * (1 + playerStatsManager.GetStatValue(Stat.Attack) / 100));
         attackDelay /= 1 + (playerStatsManager.GetStatValue(Stat.AttackSpeed) / 100);
-
         criticalChance = Mathf.RoundToInt(criticalChance * (1 + playerStatsManager.GetStatValue(Stat.CriticalChance) / 100));
         criticalPercent += playerStatsManager.GetStatValue(Stat.CriticalPercent);    
     }

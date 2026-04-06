@@ -54,9 +54,12 @@ MonoBehaviour:
   damage: 0
   attackDelay: 0.5
   animator: {fileID: 3540600655235191639}
-  aimLerp: 12
+  aimLerp: 20
   hitDetectionTransform: {fileID: 963858353558117570}
   hitCollider: {fileID: 7973469463117905476}
+  animationSpeedMultiplier: 1.5
+  damageWindowStart: 0.2
+  damageWindowEnd: 0.8
 --- !u!95 &3540600655235191639
 Animator:
   serializedVersion: 7

@@ -65,7 +65,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: GO!!
+  m_text: GO!!!
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: fe44f6ad9f11fb14d8c823d522b73d96, type: 2}
   m_sharedMaterial: {fileID: 2100000, guid: 024bd777be2eb114a9e388ab6847c961, type: 2}
@@ -299,7 +299,7 @@ GameObject:
   - component: {fileID: 8796604559734159162}
   - component: {fileID: 5449877352550061714}
   - component: {fileID: 3517292687695425236}
-  - component: {fileID: 3895089988647872317}
+  - component: {fileID: 632559954055263797}
   m_Layer: 5
   m_Name: Basic Button
   m_TagString: Untagged
@@ -410,8 +410,20 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 5449877352550061714}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
---- !u!114 &3895089988647872317
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
+        m_MethodName: ContinueGame
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &632559954055263797
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

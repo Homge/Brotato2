@@ -26,6 +26,8 @@ public class PlayerHealth : MonoBehaviour, IPlayerStatsDependency
 
     [Header(" Actions ")]
     public static Action<Vector2> onAttackDodged;
+    public static Action<float> onHealthChanged;
+    public static Action onPlayerTookDamage;
 
     private void Awake()
     {
@@ -90,6 +92,7 @@ public class PlayerHealth : MonoBehaviour, IPlayerStatsDependency
         health -= realDamage;
 
         UpdateUI();
+        onPlayerTookDamage?.Invoke();
 
         if(health <= 0)
             PassAway();
@@ -111,6 +114,7 @@ public class PlayerHealth : MonoBehaviour, IPlayerStatsDependency
         healthSlider.value = healthBarValue;
 
         healthText.text = (int)health + " / " + maxHealth;
+        onHealthChanged?.Invoke(healthBarValue);
     }
 
     public void UpdateStats(PlayerStatsManager playerStatsManager)

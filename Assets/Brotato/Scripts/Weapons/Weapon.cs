@@ -50,31 +50,36 @@ public abstract class Weapon : MonoBehaviour, IPlayerStatsDependency
         audioSource.Play();
     }
 
-    protected Enemy GetClosestEnemy()
+   protected Enemy GetClosestEnemy()
+{
+    Enemy closestEnemy = null;
+    
+    // SỬA 1: Lấy vị trí của Player làm tâm để đo tầm đánh thay vì vị trí vũ khí
+    Vector2 originPosition = Player.instance.transform.position; 
+    
+    Collider2D[] enemies = Physics2D.OverlapCircleAll(originPosition, range, enemyMask);
+
+    if (enemies.Length <= 0)
+        return null;
+
+    float minDistance = range;
+
+    for (int i = 0; i < enemies.Length; i++)
     {
-        Enemy closestEnemy = null;
-        Collider2D[] enemies = Physics2D.OverlapCircleAll(transform.position, range, enemyMask);
+        Enemy enemyChecked = enemies[i].GetComponent<Enemy>();
+        
+        // SỬA 2: Tính khoảng cách từ Player đến kẻ địch
+        float distanceToEnemy = Vector2.Distance(originPosition, enemyChecked.transform.position);
 
-        if (enemies.Length <= 0)
-            return null;        
-
-        float minDistance = range;
-
-        for (int i = 0; i < enemies.Length; i++)
+        if (distanceToEnemy < minDistance)
         {
-            Enemy enemyChecked = enemies[i].GetComponent<Enemy>();
-
-            float distanceToEnemy = Vector2.Distance(transform.position, enemyChecked.transform.position);
-
-            if (distanceToEnemy < minDistance)
-            {
-                closestEnemy = enemyChecked;
-                minDistance = distanceToEnemy;
-            }
+            closestEnemy = enemyChecked;
+            minDistance = distanceToEnemy;
         }
-
-        return closestEnemy;
     }
+
+    return closestEnemy;
+}
 
     protected int GetDamage(out bool isCriticalHit)
     {

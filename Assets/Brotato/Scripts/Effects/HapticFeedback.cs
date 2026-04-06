@@ -1,21 +1,22 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class HapticFeedback : MonoBehaviour
 {
     private void Awake()
     {
-        RangeWeapon.onBulletShot += Vibrate;
+       
+        PlayerHealth.onPlayerTookDamage += VibrateOnDamageTaken;
     }
 
     private void OnDestroy()
     {
-        RangeWeapon.onBulletShot -= Vibrate;   
+ 
+        PlayerHealth.onPlayerTookDamage -= VibrateOnDamageTaken;
     }
 
-    private void Vibrate()
+    private void VibrateOnDamageTaken()
     {
+
         CandyCoded.HapticFeedback.HapticFeedback.LightFeedback();
     }
 }
