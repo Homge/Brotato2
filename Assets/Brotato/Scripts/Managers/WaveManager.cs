@@ -14,7 +14,7 @@ public class WaveManager : MonoBehaviour, IGameStateListener
     private WaveManagerUI ui;
 
     [Header(" Settings ")]
-    [SerializeField] private float waveDuration;
+    //[SerializeField] private float waveDuration;
     private float timer;
     private bool isTimerOn;
     private int currentWaveIndex;
@@ -53,22 +53,23 @@ public class WaveManager : MonoBehaviour, IGameStateListener
     void Start() { }
 
     void Update()
+{
+    if (!isTimerOn)
+        return;
+
+    float currentWaveDuration = waves[currentWaveIndex % waves.Length].duration;
+
+    if (timer < currentWaveDuration)
     {
-        if (!isTimerOn)
-            return;
-
-        if (timer < waveDuration)
-        {
-            ManageCurrentWave();
-
-            string timerString = ((int)(waveDuration - timer)).ToString();
-            ui.UpdateTimerText(timerString);
-        }
-        else
-        {
-            StartWaveTransition();
-        }
+        ManageCurrentWave(currentWaveDuration); 
+        string timerString = ((int)(currentWaveDuration - timer)).ToString();
+        ui.UpdateTimerText(timerString);
     }
+    else
+    {
+        StartWaveTransition();
+    }
+}
 
     private void StartWave(int waveIndex)
     {
@@ -94,35 +95,37 @@ public class WaveManager : MonoBehaviour, IGameStateListener
         isTimerOn = true;
     }
 
-    private void ManageCurrentWave()
+  private void ManageCurrentWave(float currentWaveDuration)
+{
+    Wave currentWave = waves[currentWaveIndex % waves.Length];
+    bool isEndlessActive = isEndlessMode && currentWaveIndex >= waves.Length;
+
+    for (int i = 0; i < currentWave.segments.Count; i++)
     {
-        Wave currentWave = waves[currentWaveIndex % waves.Length];
+        WaveSegment segment = currentWave.segments[i];
+        
+        float tStart = segment.tStartEnd.x / 100f * currentWaveDuration;
+        float tEnd   = segment.tStartEnd.y / 100f * currentWaveDuration;
 
-        for (int i = 0; i < currentWave.segments.Count; i++)
+        if (timer < tStart || timer > tEnd)
+            continue;
+
+        float timeSinceSegmentStart = timer - tStart;
+        float scaledSpawnFrequency  = segment.spawnFrequency * DifficultyMultiplier;
+        float spawnDelay            = 1f / scaledSpawnFrequency;
+
+        if (timeSinceSegmentStart / spawnDelay > localCounters[i])
         {
-            WaveSegment segment = currentWave.segments[i];
-            float tStart = segment.tStartEnd.x / 100f * waveDuration;
-            float tEnd   = segment.tStartEnd.y / 100f * waveDuration;
+            Instantiate(segment.prefab, GetSpawnPosition(), Quaternion.identity, transform);
+            localCounters[i]++;
 
-            if (timer < tStart || timer > tEnd)
-                continue;
-
-            float timeSinceSegmentStart = timer - tStart;
-            float scaledSpawnFrequency  = segment.spawnFrequency * DifficultyMultiplier;
-            float spawnDelay            = 1f / scaledSpawnFrequency;
-
-            if (timeSinceSegmentStart / spawnDelay > localCounters[i])
-            {
-                Instantiate(segment.prefab, GetSpawnPosition(), Quaternion.identity, transform);
-                localCounters[i]++;
-
-                if (segment.spawnOnce)
-                    localCounters[i] = Mathf.Infinity;
-            }
+            if (segment.spawnOnce || (!isEndlessActive && segment.spawnAmount > 0 && localCounters[i] >= segment.spawnAmount))
+                localCounters[i] = Mathf.Infinity;
         }
-
-        timer += Time.deltaTime;
     }
+
+    timer += Time.deltaTime;
+}
 
     private void StartWaveTransition()
     {
@@ -193,6 +196,7 @@ public class WaveManager : MonoBehaviour, IGameStateListener
 public struct Wave
 {
     public string name;
+    public float duration;
     public List<WaveSegment> segments;
 }
 

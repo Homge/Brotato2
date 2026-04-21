@@ -442,7 +442,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d620c58f8a2fd94f95424b227f464b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 1
+  moveSpeed: 0.7
 --- !u!58 &5917311224323821174
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -513,7 +513,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67cb52285f055c6409693913f694944b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TankerEnemy
-  maxHealth: 20
+  maxHealth: 30
   renderer: {fileID: 5237518597382460664}
   spawnIndicator: {fileID: 3489597284602620183}
   collider: {fileID: 5917311224323821174}
@@ -522,8 +522,8 @@ MonoBehaviour:
   gizmos: 0
   damage: 1
   attackFrequency: 2
-  damageReduction: 5
-  sizeMultiplier: 1.5
+  damageReduction: 0
+  sizeMultiplier: 2.5
 --- !u!1 &8002284201987669874
 GameObject:
   m_ObjectHideFlags: 0

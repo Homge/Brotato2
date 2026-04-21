@@ -441,7 +441,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d620c58f8a2fd94f95424b227f464b8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 4
+  moveSpeed: 3
 --- !u!58 &5917311224323821174
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -490,14 +490,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7bcf47532a18e54428bdbf8b6c988625, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ExploderEnemy
-  maxHealth: 10
+  maxHealth: 5
   renderer: {fileID: 5237518597382460664}
   spawnIndicator: {fileID: 3489597284602620183}
   collider: {fileID: 5917311224323821174}
   passAwayParticles: {fileID: 2649916375515356013}
   playerDetectionRadius: 1
   gizmos: 0
-  explosionDamage: 5
+  explosionDamage: 15
   explosionRadius: 1.5
   explosionDelay: 0.8
 --- !u!1 &6365732290747487113

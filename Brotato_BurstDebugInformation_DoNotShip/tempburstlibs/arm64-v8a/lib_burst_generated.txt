@@ -10,7 +10,7 @@ Library: C:\Games\Brotato2\Temp\BurstOutput\tempburstlibs\arm64-v8a\lib_burst_ge
 --target-framework=NetFramework
 --generate-link-xml=Temp\burst.link.xml
 --temp-folder=C:\Games\Brotato2\Temp\Burst
---key-folder=C:/6000.3.10f1/Editor/Data/PlaybackEngines/AndroidPlayer
+--key-folder=C:/6000.3.3f1/Editor/Data/PlaybackEngines/AndroidPlayer
 --decode-folder=C:\Games\Brotato2\Library\Burst
 --output=C:\Games\Brotato2\Temp\BurstOutput\tempburstlibs\arm64-v8a\lib_burst_generated
 --pdb-search-paths=Temp/ManagedSymbols/
@@ -34,7 +34,7 @@ Library: C:\Games\Brotato2\Temp\BurstOutput\tempburstlibs\arm64-v8a\lib_burst_ge
 --float-mode=Fast
 --generate-link-xml=Temp\burst.link.xml
 --temp-folder=C:\Games\Brotato2\Temp\Burst
---key-folder=C:/6000.3.10f1/Editor/Data/PlaybackEngines/AndroidPlayer
+--key-folder=C:/6000.3.3f1/Editor/Data/PlaybackEngines/AndroidPlayer
 --decode-folder=C:\Games\Brotato2\Library\Burst
 --output=C:\Games\Brotato2\Temp\BurstOutput\tempburstlibs\arm64-v8a\lib_burst_generated
 --pdb-search-paths=Temp/ManagedSymbols/
@@ -52,7 +52,7 @@ Library: C:\Games\Brotato2\Temp\BurstOutput\tempburstlibs\arm64-v8a\lib_burst_ge
 --target-framework=NetFramework
 --generate-link-xml=Temp\burst.link.xml
 --temp-folder=C:\Games\Brotato2\Temp\Burst
---key-folder=C:/6000.3.10f1/Editor/Data/PlaybackEngines/AndroidPlayer
+--key-folder=C:/6000.3.3f1/Editor/Data/PlaybackEngines/AndroidPlayer
 --decode-folder=C:\Games\Brotato2\Library\Burst
 --output=C:\Games\Brotato2\Temp\BurstOutput\tempburstlibs\arm64-v8a\lib_burst_generated
 --pdb-search-paths=Temp/ManagedSymbols/

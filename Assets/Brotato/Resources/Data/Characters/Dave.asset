@@ -17,7 +17,7 @@ MonoBehaviour:
   <PurchasePrice>k__BackingField: 0
   attack: 0
   attackSpeed: 1
-  criticalChance: -1
+  criticalChance: 0
   criticalPercent: 0
   moveSpeed: 5
   maxHealth: 1
@@ -27,3 +27,4 @@ MonoBehaviour:
   luck: 0
   dodge: 0
   lifeSteal: 1
+  pierce: 0

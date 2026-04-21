@@ -15,7 +15,7 @@ MonoBehaviour:
   <Name>k__BackingField: Poison Mushroom
   <Icon>k__BackingField: {fileID: 21300000, guid: 5343b7115bd89c64982db3f2216a0c0f, type: 3}
   <Price>k__BackingField: 50
-  <RecyclePrice>k__BackingField: 75
+  <RecyclePrice>k__BackingField: 15
   <Rarity>k__BackingField: 2
   statDatas:
   - stat: 7

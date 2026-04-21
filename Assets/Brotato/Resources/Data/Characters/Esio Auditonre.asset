@@ -19,11 +19,12 @@ MonoBehaviour:
   attackSpeed: 10
   criticalChance: 15
   criticalPercent: 0.5
-  moveSpeed: 20
-  maxHealth: -15
+  moveSpeed: 10
+  maxHealth: -5
   range: 10
   healthRecoverySpeed: 0
   armor: -5
   luck: 0
   dodge: 25
   lifeSteal: 0
+  pierce: 0

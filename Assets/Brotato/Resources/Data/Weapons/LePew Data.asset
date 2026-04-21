@@ -23,5 +23,5 @@ MonoBehaviour:
   attackSpeed: 2
   criticalChance: 5
   criticalPercent: 1.5
-  range: 4
+  range: 10
   tags: 02000000

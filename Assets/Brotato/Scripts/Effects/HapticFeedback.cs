@@ -17,6 +17,8 @@ public class HapticFeedback : MonoBehaviour
     private void VibrateOnDamageTaken()
     {
 
-        CandyCoded.HapticFeedback.HapticFeedback.LightFeedback();
+       #if !UNITY_EDITOR && (UNITY_ANDROID || UNITY_IOS)
+        Handheld.Vibrate(); 
+        #endif
     }
 }

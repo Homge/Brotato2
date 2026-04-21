@@ -16,11 +16,11 @@ MonoBehaviour:
   <Sprite>k__BackingField: {fileID: -7040960777665541239, guid: f341be1221ba69c4583fb39e9a86f6cb, type: 3}
   <PurchasePrice>k__BackingField: 0
   <RecyclePrice>k__BackingField: 0
-  <AttackSound>k__BackingField: {fileID: 8300000, guid: 17fbb6dd6c79b8d49bc9adfd114fc202, type: 3}
+  <AttackSound>k__BackingField: {fileID: 8300000, guid: 5ff664f5e3eb1b0448c42fec22cd845d, type: 3}
   <AnimatorOverride>k__BackingField: {fileID: 0}
   <Prefab>k__BackingField: {fileID: 7020466468223352377, guid: 6d20f96679e9f5f449d56dcdb8f9d546, type: 3}
   attack: 60
-  attackSpeed: 0.3
+  attackSpeed: 0.5
   criticalChance: 25
   criticalPercent: 3
   range: 30

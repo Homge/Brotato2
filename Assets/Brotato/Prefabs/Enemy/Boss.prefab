@@ -947,7 +947,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 817204010405ffc488d106b17cf1172a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Boss
-  maxHealth: 1500
+  maxHealth: 2000
   renderer: {fileID: 5237518597382460664}
   spawnIndicator: {fileID: 3489597284602620183}
   collider: {fileID: 5917311224323821174}
@@ -958,7 +958,7 @@ MonoBehaviour:
   healthText: {fileID: 2745999000639214723}
   animator: {fileID: 936254090157666384}
   maxIdleDuration: 0
-  moveSpeed: 10
+  moveSpeed: 1
 --- !u!58 &5917311224323821174
 CircleCollider2D:
   m_ObjectHideFlags: 0

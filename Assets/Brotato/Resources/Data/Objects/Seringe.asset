@@ -15,7 +15,7 @@ MonoBehaviour:
   <Name>k__BackingField: Seringe
   <Icon>k__BackingField: {fileID: 7059620371797548709, guid: 5b2f59fcbfa65284ebaa0ddf9c090312, type: 3}
   <Price>k__BackingField: 50
-  <RecyclePrice>k__BackingField: 75
+  <RecyclePrice>k__BackingField: 15
   <Rarity>k__BackingField: 0
   statDatas:
   - stat: 5
