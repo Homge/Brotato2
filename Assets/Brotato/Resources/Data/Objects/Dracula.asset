@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Name>k__BackingField: Dracula
   <Icon>k__BackingField: {fileID: 8647823593821616703, guid: 5eca3059425f9764984e6618cca53a2d, type: 3}
-  <Price>k__BackingField: 50
+  <Price>k__BackingField: 100
   <RecyclePrice>k__BackingField: 0
   <Rarity>k__BackingField: 3
   statDatas:

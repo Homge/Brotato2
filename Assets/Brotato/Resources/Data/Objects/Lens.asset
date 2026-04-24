@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   <Name>k__BackingField: Lens
   <Icon>k__BackingField: {fileID: 21300000, guid: b6bc290c5fb5d2b4d830dc9d31d43119, type: 3}
-  <Price>k__BackingField: 50
+  <Price>k__BackingField: 100
   <RecyclePrice>k__BackingField: 15
   <Rarity>k__BackingField: 3
   statDatas:

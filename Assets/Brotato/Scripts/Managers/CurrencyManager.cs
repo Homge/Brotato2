@@ -40,6 +40,7 @@ public class CurrencyManager : MonoBehaviour, IWantToBeSaved
 
     public void Save()
     {
+        if (Sijil.instance == null) return;
         Sijil.Save(this, premiumCurrencyKey, PremiumCurrency);
     }
 
@@ -60,6 +61,28 @@ public class CurrencyManager : MonoBehaviour, IWantToBeSaved
 
     [NaughtyAttributes.Button]
     private void Add500PCurrency() => AddPremiumCurrency(500);
+
+    [NaughtyAttributes.Button]
+    private void ResetCurrency()
+    {
+        Currency = 0;
+        UpdateVisuals();
+    }
+
+    [NaughtyAttributes.Button]
+    private void ResetPremiumCurrency()
+    {
+        PremiumCurrency = 0;
+        UpdateVisuals();
+    }
+
+    [NaughtyAttributes.Button]
+    private void ResetAllCurrency()
+    {
+        Currency = 0;
+        PremiumCurrency = 0;
+        UpdateVisuals();
+    }
 
     public void AddCurrency(int amount)
     {

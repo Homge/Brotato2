@@ -15,8 +15,8 @@ MonoBehaviour:
   <Name>k__BackingField: Shield
   <Icon>k__BackingField: {fileID: -2757887451555568444, guid: 8fffe40f3ebda0d469b31ca1513a3248, type: 3}
   <Price>k__BackingField: 50
-  <RecyclePrice>k__BackingField: 75
-  <Rarity>k__BackingField: 1
+  <RecyclePrice>k__BackingField: 22
+  <Rarity>k__BackingField: 0
   statDatas:
   - stat: 8
     value: 10
