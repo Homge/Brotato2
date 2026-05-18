@@ -17,7 +17,7 @@ A fan-made roguelike arena survival game developed in Unity, inspired by Brotato
 </div>
 
 ---
-
+Dowload Here: https://homge.itch.io/have-bean-01
 
 ---
 
@@ -98,19 +98,21 @@ Repeat
 ## Combat
 
 ```md
-![Combat](images/combat.png)
+<img width="453" height="213" alt="image" src="https://github.com/user-attachments/assets/47292ded-c553-4894-8e3d-b8da749eb31c" />
+
 ```
 
 ## Shop
 
 ```md
-![Shop](images/shop.png)
+<img width="460" height="214" alt="image" src="https://github.com/user-attachments/assets/cac924eb-521b-465c-81c8-b44475bd69f3" />
+
 ```
 
 ## Upgrade System
 
 ```md
-![Upgrade](images/upgrade.png)
+<img width="476" height="214" alt="image" src="https://github.com/user-attachments/assets/51456cf9-ad83-407c-8676-c88738a988e7" />
 ```
 
 ---
