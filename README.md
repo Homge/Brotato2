@@ -18,13 +18,6 @@ A fan-made roguelike arena survival game developed in Unity, inspired by Brotato
 
 ---
 
-# Trailer / Gameplay Preview
-
-> Add your gameplay GIF here
-
-```md
-![Gameplay](images/gameplay.gif)
-```
 
 ---
 
